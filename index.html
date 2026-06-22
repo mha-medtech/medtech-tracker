@@ -8,90 +8,95 @@
 </head>
 <body>
 
-<header>
-    <div class="logo">MedTech Tracker</div>
-    <nav id="mainNav">
-        <a href="#">Dashboard</a>
-        <a href="#">Equipment</a>
-        <a href="#">Maintenance</a>
-        <a href="#">Reports</a>
-    </nav>
-    <div class="header-actions">
-        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
-            <span class="theme-icon">🌙</span>
-        </button>
-        <button class="hamburger" onclick="toggleMenu()" title="Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </div>
-</header>
+    <header>
+        <div class="logo">MedTech Tracker</div>
+        <nav id="mainNav">
+            <a href="#" data-i18n="nav_dashboard">Dashboard</a>
+            <a href="#" data-i18n="nav_equipment">Equipment</a>
+            <a href="#" data-i18n="nav_maintenance">Maintenance</a>
+            <a href="#" data-i18n="nav_reports">Reports</a>
+        </nav>
+        <div class="header-actions">
+            <select class="lang-switcher" onchange="changeLanguage(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="fa">FA</option>
+            </select>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="hamburger" onclick="toggleMenu()" title="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
 
     <main>
         <div class="stats">
             <div class="card">
-                <h3>Total Equipment</h3>
+                <h3 data-i18n="stat_total">Total Equipment</h3>
                 <p class="number">24</p>
             </div>
             <div class="card">
-                <h3>Needs Maintenance</h3>
+                <h3 data-i18n="stat_maintenance">Needs Maintenance</h3>
                 <p class="number warning">3</p>
             </div>
             <div class="card">
-                <h3>Active</h3>
+                <h3 data-i18n="stat_active">Active</h3>
                 <p class="number good">21</p>
             </div>
         </div>
 
         <div class="equipment-list">
-<div class="list-header">
-    <h2>Equipment List</h2>
-    <div class="list-controls">
-        <input type="text" id="searchInput" placeholder="Search equipment..." oninput="filterTable()" />
-        <select id="statusFilter" onchange="filterTable()">
-            <option value="all">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Needs Check">Needs Check</option>
-            <option value="Out of Service">Out of Service</option>
-        </select>
-        <button class="add-btn" onclick="toggleModal()">+ Add Equipment</button>
-    </div>
-</div>
+            <div class="list-header">
+                <h2 data-i18n="equipment_title">Equipment List</h2>
+                <div class="list-controls">
+                    <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search equipment..." oninput="filterTable()" />
+                    <select id="statusFilter" onchange="filterTable()">
+                        <option value="all" data-i18n="filter_all">All Status</option>
+                        <option value="Active" data-i18n="status_active">Active</option>
+                        <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
+                        <option value="Out of Service" data-i18n="status_out">Out of Service</option>
+                    </select>
+                    <button class="add-btn" onclick="toggleModal()" data-i18n="btn_add">+ Add Equipment</button>
+                </div>
+            </div>
 
             <div class="modal-overlay" id="modalOverlay">
                 <div class="modal">
                     <div class="modal-header">
-                        <h3>Add New Equipment</h3>
+                        <h3 data-i18n="modal_title">Add New Equipment</h3>
                         <button class="close-btn" onclick="toggleModal()">✕</button>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Device Name</label>
-                            <input type="text" id="deviceName" placeholder="e.g. ECG Monitor" />
+                            <label data-i18n="form_name">Device Name</label>
+                            <input type="text" id="deviceName" data-i18n-placeholder="form_name_ph" placeholder="e.g. ECG Monitor" />
                         </div>
                         <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" id="deviceLocation" placeholder="e.g. ICU - Room 3" />
+                            <label data-i18n="form_location">Location</label>
+                            <input type="text" id="deviceLocation" data-i18n-placeholder="form_location_ph" placeholder="e.g. ICU - Room 3" />
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Last Calibration</label>
+                            <label data-i18n="form_date">Last Calibration</label>
                             <input type="date" id="deviceDate" />
                         </div>
                         <div class="form-group">
-                            <label>Status</label>
+                            <label data-i18n="form_status">Status</label>
                             <select id="deviceStatus">
-                                <option value="Active">Active</option>
-                                <option value="Needs Check">Needs Check</option>
-                                <option value="Out of Service">Out of Service</option>
+                                <option value="Active" data-i18n="status_active">Active</option>
+                                <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
+                                <option value="Out of Service" data-i18n="status_out">Out of Service</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button class="cancel-btn" onclick="toggleModal()">Cancel</button>
-                        <button class="save-btn" onclick="addEquipment()">Save Equipment</button>
+                        <button class="cancel-btn" onclick="toggleModal()" data-i18n="btn_cancel">Cancel</button>
+                        <button class="save-btn" onclick="addEquipment()" data-i18n="btn_save">Save Equipment</button>
                     </div>
                 </div>
             </div>
@@ -99,10 +104,10 @@
             <table id="equipmentTable">
                 <thead>
                     <tr>
-                        <th>Device</th>
-                        <th>Location</th>
-                        <th>Last Calibration</th>
-                        <th>Status</th>
+                        <th data-i18n="col_device">Device</th>
+                        <th data-i18n="col_location">Location</th>
+                        <th data-i18n="col_date">Last Calibration</th>
+                        <th data-i18n="col_status">Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -138,7 +143,7 @@
             <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">
                 Mohammad Hassan Abbasi
             </a>
-            &nbsp;|&nbsp; v1.1.0
+            &nbsp;|&nbsp; v1.2.0
         </p>
     </footer>
 

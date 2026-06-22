@@ -475,3 +475,31 @@ footer a:hover { text-decoration: underline; }
     color: var(--text-muted);
     font-size: 0.9rem;
 }
+
+.lang-switcher {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.lang-switcher option {
+    background: var(--header-bg);
+    color: white;
+}
+
+[dir="rtl"] nav {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .list-controls {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] td, [dir="rtl"] th {
+    text-align: right;
+}
