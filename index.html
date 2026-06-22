@@ -8,18 +8,25 @@
 </head>
 <body>
 
-    <header>
-        <div class="logo">🏥 MedTech Tracker</div>
-        <nav>
-            <a href="#">Dashboard</a>
-            <a href="#">Equipment</a>
-            <a href="#">Maintenance</a>
-            <a href="#">Reports</a>
-        </nav>
+<header>
+    <div class="logo">MedTech Tracker</div>
+    <nav id="mainNav">
+        <a href="#">Dashboard</a>
+        <a href="#">Equipment</a>
+        <a href="#">Maintenance</a>
+        <a href="#">Reports</a>
+    </nav>
+    <div class="header-actions">
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
             <span class="theme-icon">🌙</span>
         </button>
-    </header>
+        <button class="hamburger" onclick="toggleMenu()" title="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>
 
     <main>
         <div class="stats">
@@ -38,10 +45,19 @@
         </div>
 
         <div class="equipment-list">
-            <div class="list-header">
-                <h2>Equipment List</h2>
-                <button class="add-btn" onclick="toggleModal()">+ Add Equipment</button>
-            </div>
+<div class="list-header">
+    <h2>Equipment List</h2>
+    <div class="list-controls">
+        <input type="text" id="searchInput" placeholder="Search equipment..." oninput="filterTable()" />
+        <select id="statusFilter" onchange="filterTable()">
+            <option value="all">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Needs Check">Needs Check</option>
+            <option value="Out of Service">Out of Service</option>
+        </select>
+        <button class="add-btn" onclick="toggleModal()">+ Add Equipment</button>
+    </div>
+</div>
 
             <div class="modal-overlay" id="modalOverlay">
                 <div class="modal">
