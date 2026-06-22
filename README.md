@@ -1,3 +1,6 @@
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Last Updated](https://img.shields.io/badge/updated-June%202026-green)
+
 # MedTech Tracker 🏥
 
 A web-based medical equipment tracking system for clinics and hospitals.
