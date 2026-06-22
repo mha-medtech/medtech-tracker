@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,9 @@
             <a href="#">Maintenance</a>
             <a href="#">Reports</a>
         </nav>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+            <span class="theme-icon">🌙</span>
+        </button>
     </header>
 
     <main>
@@ -35,8 +38,49 @@
         </div>
 
         <div class="equipment-list">
-            <h2>Equipment List</h2>
-            <table>
+            <div class="list-header">
+                <h2>Equipment List</h2>
+                <button class="add-btn" onclick="toggleModal()">+ Add Equipment</button>
+            </div>
+
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3>Add New Equipment</h3>
+                        <button class="close-btn" onclick="toggleModal()">✕</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Device Name</label>
+                            <input type="text" id="deviceName" placeholder="e.g. ECG Monitor" />
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="deviceLocation" placeholder="e.g. ICU - Room 3" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Last Calibration</label>
+                            <input type="date" id="deviceDate" />
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="deviceStatus">
+                                <option value="Active">Active</option>
+                                <option value="Needs Check">Needs Check</option>
+                                <option value="Out of Service">Out of Service</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="cancel-btn" onclick="toggleModal()">Cancel</button>
+                        <button class="save-btn" onclick="addEquipment()">Save Equipment</button>
+                    </div>
+                </div>
+            </div>
+
+            <table id="equipmentTable">
                 <thead>
                     <tr>
                         <th>Device</th>
@@ -45,7 +89,7 @@
                         <th>Status</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="equipmentBody">
                     <tr>
                         <td>ECG Monitor</td>
                         <td>ICU - Room 3</td>
@@ -68,13 +112,17 @@
             </table>
         </div>
     </main>
-<footer>
-    <p>Designed & Developed by 
-        <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">
-            Mohammad Hassan Abbasi
-        </a>
-        &nbsp;|&nbsp; v1.0.0
-    </p>
-</footer>
+
+    <footer>
+        <p>Designed & Developed by
+            <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">
+                Mohammad Hassan Abbasi
+            </a>
+            &nbsp;|&nbsp; v1.1.0
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+
 </body>
 </html>
