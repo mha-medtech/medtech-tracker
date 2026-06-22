@@ -52,6 +52,7 @@ function addEquipment() {
         <td>${location}</td>
         <td>${date}</td>
         <td><span class="status ${statusClass}">${status}</span></td>
+        <td><button class="delete-btn" onclick="deleteRow(this)">🗑</button></td>
     `;
     
     tbody.appendChild(row);
@@ -69,4 +70,10 @@ function updateStats() {
     document.querySelectorAll('.number')[0].textContent = total;
     document.querySelectorAll('.number')[1].textContent = needsCheck;
     document.querySelectorAll('.number')[2].textContent = active;
+}
+// Delete Row
+function deleteRow(btn) {
+    const row = btn.closest('tr');
+    row.remove();
+    updateStats();
 }
