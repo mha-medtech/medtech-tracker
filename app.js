@@ -13,7 +13,8 @@ const translations = {
         form_status: "Status", btn_cancel: "Cancel", btn_save: "Save Equipment",
         col_device: "Device", col_location: "Location",
         col_date: "Last Calibration", col_status: "Status",
-        no_results: "No equipment found."
+        no_results: "No equipment found.",
+        stat_out: "Out of Service"
     },
     de: {
         nav_dashboard: "Dashboard", nav_equipment: "Geräte",
@@ -29,7 +30,8 @@ const translations = {
         form_status: "Status", btn_cancel: "Abbrechen", btn_save: "Gerät speichern",
         col_device: "Gerät", col_location: "Standort",
         col_date: "Letzte Kalibrierung", col_status: "Status",
-        no_results: "Kein Gerät gefunden."
+        no_results: "Kein Gerät gefunden.",
+        stat_out: "Außer Betrieb"
     },
     fa: {
         nav_dashboard: "داشبورد", nav_equipment: "تجهیزات",
@@ -45,7 +47,8 @@ const translations = {
         form_status: "وضعیت", btn_cancel: "انصراف", btn_save: "ذخیره تجهیز",
         col_device: "دستگاه", col_location: "موقعیت",
         col_date: "آخرین کالیبراسیون", col_status: "وضعیت",
-        no_results: "تجهیزی یافت نشد."
+        no_results: "تجهیزی یافت نشد.",
+        stat_out: "خارج از سرویس"
     }
 };
 
@@ -170,6 +173,7 @@ function saveEdit(row) {
 
     document.querySelector('.save-btn').onclick = addEquipment;
 
+    updateStats();
     saveEquipment();
     toggleModal();
 }
@@ -183,12 +187,14 @@ function deleteRow(btn) {
 function updateStats() {
     const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
     const total = rows.length;
-    const needsCheck = document.querySelectorAll('#equipmentBody .status.warning, #equipmentBody .status.danger').length;
     const active = document.querySelectorAll('#equipmentBody .status.good').length;
+    const needsCheck = document.querySelectorAll('#equipmentBody .status.warning').length;
+    const outOfService = document.querySelectorAll('#equipmentBody .status.danger').length;
 
-    document.querySelectorAll('.number')[0].textContent = total;
-    document.querySelectorAll('.number')[1].textContent = needsCheck;
-    document.querySelectorAll('.number')[2].textContent = active;
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statActive').textContent = active;
+    document.getElementById('statNeeds').textContent = needsCheck;
+    document.getElementById('statOut').textContent = outOfService;
 }
 
 function saveEquipment() {

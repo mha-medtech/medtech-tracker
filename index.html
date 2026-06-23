@@ -35,19 +35,23 @@
 
     <main>
         <div class="stats">
-            <div class="card">
-                <h3 data-i18n="stat_total">Total Equipment</h3>
-                <p class="number">24</p>
-            </div>
-            <div class="card">
-                <h3 data-i18n="stat_maintenance">Needs Maintenance</h3>
-                <p class="number warning">3</p>
-            </div>
-            <div class="card">
-                <h3 data-i18n="stat_active">Active</h3>
-                <p class="number good">21</p>
-            </div>
-        </div>
+    <div class="card">
+        <h3 data-i18n="stat_total">Total Equipment</h3>
+        <p class="number" id="statTotal">0</p>
+    </div>
+    <div class="card">
+        <h3 data-i18n="stat_active">Active</h3>
+        <p class="number good" id="statActive">0</p>
+    </div>
+    <div class="card">
+        <h3 data-i18n="stat_maintenance">Needs Maintenance</h3>
+        <p class="number warning" id="statNeeds">0</p>
+    </div>
+    <div class="card">
+        <h3 data-i18n="stat_out">Out of Service</h3>
+        <p class="number danger" id="statOut">0</p>
+    </div>
+</div>
 
         <div class="equipment-list">
             <div class="list-header">
