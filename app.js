@@ -1,3 +1,59 @@
+// Chart.js CDN
+const chartScript = document.createElement('script');
+chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+chartScript.onload = function() {
+    initChart();
+};
+document.head.appendChild(chartScript);
+
+let statusChart = null;
+
+function initChart() {
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    statusChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Active', 'Needs Check', 'Out of Service'],
+            datasets: [{
+                data: [0, 0, 0],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 16,
+                        font: { size: 12 },
+                        color: '#666'
+                    }
+                }
+            },
+            cutout: '70%'
+        }
+    });
+}
+
+function updateChart() {
+    if (!statusChart) return;
+    const t = translations[currentLang];
+    const active = document.querySelectorAll('#equipmentBody .status.good').length;
+    const needs = document.querySelectorAll('#equipmentBody .status.warning').length;
+    const out = document.querySelectorAll('#equipmentBody .status.danger').length;
+    
+    statusChart.data.labels = [
+        t.chart_active,
+        t.chart_needs,
+        t.chart_out
+    ];
+    statusChart.data.datasets[0].data = [active, needs, out];
+    statusChart.update();
+}
 const translations = {
     en: {
         nav_dashboard: "Dashboard", nav_equipment: "Equipment",
@@ -14,7 +70,17 @@ const translations = {
         col_device: "Device", col_location: "Location",
         col_date: "Last Calibration", col_status: "Status",
         no_results: "No equipment found.",
-        stat_out: "Out of Service"
+        stat_out: "Out of Service",
+        chart_title: "Equipment Status Overview",
+        chart_active: "Active",
+        chart_needs: "Needs Check",
+        chart_out: "Out of Service",
+        alerts_title: "⚠️ Calibration Alerts",
+alert_overdue: "Overdue",
+form_next_date: "Next Calibration",
+col_next_date: "Next Calibration",
+alert_days_ago: "days ago",
+alert_days_left: "days until calibration"
     },
     de: {
         nav_dashboard: "Dashboard", nav_equipment: "Geräte",
@@ -31,7 +97,17 @@ const translations = {
         col_device: "Gerät", col_location: "Standort",
         col_date: "Letzte Kalibrierung", col_status: "Status",
         no_results: "Kein Gerät gefunden.",
-        stat_out: "Außer Betrieb"
+        stat_out: "Außer Betrieb",
+        chart_title: "Gerätestatusübersicht",
+        chart_active: "Aktiv",
+        chart_needs: "Prüfung erforderlich",
+        chart_out: "Außer Betrieb",
+        alerts_title: "⚠️ Kalibrierungswarnungen",
+alert_overdue: "Überfällig",
+form_next_date: "Nächste Kalibrierung",
+col_next_date: "Nächste Kalibrierung",
+alert_days_ago: "Tage überfällig",
+alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
         nav_dashboard: "داشبورد", nav_equipment: "تجهیزات",
@@ -48,7 +124,17 @@ const translations = {
         col_device: "دستگاه", col_location: "موقعیت",
         col_date: "آخرین کالیبراسیون", col_status: "وضعیت",
         no_results: "تجهیزی یافت نشد.",
-        stat_out: "خارج از سرویس"
+        stat_out: "خارج از سرویس",
+        chart_title: "نمای کلی وضعیت تجهیزات",
+        chart_active: "فعال",
+        chart_needs: "نیاز به بررسی",
+        chart_out: "خارج از سرویس",
+        alerts_title: "⚠️ هشدارهای کالیبراسیون",
+alert_overdue: "منقضی شده",
+form_next_date: "کالیبراسیون بعدی",
+col_next_date: "کالیبراسیون بعدی",
+alert_days_ago: "روز پیش منقضی شد",
+alert_days_left: "روز تا کالیبراسیون"
     }
 };
 
@@ -68,7 +154,13 @@ function changeLanguage(lang) {
         const key = el.getAttribute('data-i18n-placeholder');
         if (t[key]) el.placeholder = t[key];
     });
+    document.querySelectorAll('[data-status-key]').forEach(el => {
+        const key = el.getAttribute('data-status-key');
+        if (t[key]) el.textContent = t[key];
+    });
     localStorage.setItem('lang', lang);
+    updateChart();
+    checkCalibrationAlerts();
 }
 
 function toggleTheme() {
@@ -96,18 +188,23 @@ function clearForm() {
     document.getElementById('deviceName').value = '';
     document.getElementById('deviceLocation').value = '';
     document.getElementById('deviceDate').value = '';
+    document.getElementById('deviceNextDate').value = '';
     document.getElementById('deviceStatus').value = 'Active';
 }
 
-function createRow(name, location, date, status) {
-    const statusClass = status === 'Active' ? 'good' :
-                        status === 'Needs Check' ? 'warning' : 'danger';
+function createRow(name, location, date, nextDate, status) {
+    const statusClass = status === 'Active' || status === 'Aktiv' || status === 'فعال' ? 'good' :
+                        status === 'Needs Check' || status === 'Prüfung erforderlich' || status === 'نیاز به بررسی' ? 'warning' : 'danger';
+    const t = translations[currentLang];
+    const statusKey = statusClass === 'good' ? 'status_active' :
+                      statusClass === 'warning' ? 'status_needs_check' : 'status_out';
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>${name}</td>
         <td>${location}</td>
         <td>${date}</td>
-        <td><span class="status ${statusClass}">${status}</span></td>
+        <td>${nextDate || '-'}</td>
+        <td><span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span></td>
         <td class="action-btns">
             <button class="edit-btn" onclick="editRow(this)">✏️</button>
             <button class="delete-btn" onclick="deleteRow(this)">🗑</button>
@@ -120,6 +217,7 @@ function addEquipment() {
     const name = document.getElementById('deviceName').value.trim();
     const location = document.getElementById('deviceLocation').value.trim();
     const date = document.getElementById('deviceDate').value;
+    const nextDate = document.getElementById('deviceNextDate').value;
     const status = document.getElementById('deviceStatus').value;
 
     if (!name || !location || !date) {
@@ -128,7 +226,7 @@ function addEquipment() {
     }
 
     const tbody = document.getElementById('equipmentBody');
-    const row = createRow(name, location, date, status);
+    const row = createRow(name, location, date, nextDate, status);
     tbody.appendChild(row);
 
     updateStats();
@@ -143,7 +241,8 @@ function editRow(btn) {
     document.getElementById('deviceName').value = cells[0].textContent;
     document.getElementById('deviceLocation').value = cells[1].textContent;
     document.getElementById('deviceDate').value = cells[2].textContent;
-    document.getElementById('deviceStatus').value = cells[3].querySelector('.status').textContent.trim();
+    document.getElementById('deviceNextDate').value = cells[3].textContent === '-' ? '' : cells[3].textContent;
+    document.getElementById('deviceStatus').value = cells[4].querySelector('.status').textContent.trim();
 
     document.querySelector('.save-btn').onclick = function() {
         saveEdit(row);
@@ -156,6 +255,7 @@ function saveEdit(row) {
     const name = document.getElementById('deviceName').value.trim();
     const location = document.getElementById('deviceLocation').value.trim();
     const date = document.getElementById('deviceDate').value;
+    const nextDate = document.getElementById('deviceNextDate').value;
     const status = document.getElementById('deviceStatus').value;
 
     if (!name || !location || !date) {
@@ -163,13 +263,17 @@ function saveEdit(row) {
         return;
     }
 
-    const statusClass = status === 'Active' ? 'good' :
-                        status === 'Needs Check' ? 'warning' : 'danger';
+    const statusClass = status === 'Active' || status === 'Aktiv' || status === 'فعال' ? 'good' :
+                        status === 'Needs Check' || status === 'Prüfung erforderlich' || status === 'نیاز به بررسی' ? 'warning' : 'danger';
+    const statusKey = statusClass === 'good' ? 'status_active' :
+                      statusClass === 'warning' ? 'status_needs_check' : 'status_out';
+    const t = translations[currentLang];
 
     row.cells[0].textContent = name;
     row.cells[1].textContent = location;
     row.cells[2].textContent = date;
-    row.cells[3].innerHTML = `<span class="status ${statusClass}">${status}</span>`;
+    row.cells[3].textContent = nextDate || '-';
+    row.cells[4].innerHTML = `<span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span>`;
 
     document.querySelector('.save-btn').onclick = addEquipment;
 
@@ -195,6 +299,8 @@ function updateStats() {
     document.getElementById('statActive').textContent = active;
     document.getElementById('statNeeds').textContent = needsCheck;
     document.getElementById('statOut').textContent = outOfService;
+        updateChart();
+        checkCalibrationAlerts();
 }
 
 function saveEquipment() {
@@ -205,7 +311,8 @@ function saveEquipment() {
             name: row.cells[0].textContent,
             location: row.cells[1].textContent,
             date: row.cells[2].textContent,
-            status: row.cells[3].querySelector('.status').textContent.trim()
+            nextDate: row.cells[3].textContent,
+            status: row.cells[4].querySelector('.status').textContent.trim()
         });
     });
     localStorage.setItem('equipment', JSON.stringify(data));
@@ -213,14 +320,29 @@ function saveEquipment() {
 
 function loadEquipment() {
     const saved = localStorage.getItem('equipment');
-    if (!saved) return;
+    if (!saved) {
+        const defaultData = [
+            { name: "ECG Monitor", location: "ICU - Room 3", date: "2024-06-01", nextDate: "2025-06-01", status: "Active" },
+            { name: "Patient Monitor", location: "Emergency", date: "2023-09-05", nextDate: "2024-09-05", status: "Needs Check" },
+            { name: "Surgical Suction", location: "OR - Room 1", date: "2025-01-20", nextDate: "2026-07-20", status: "Active" },
+            { name: "Dental Unit", location: "Dental Clinic", date: "2024-03-10", nextDate: "2025-03-10", status: "Out of Service" },
+            { name: "Pulse Oximeter", location: "Ward B", date: "2025-05-01", nextDate: "2026-05-01", status: "Active" }
+        ];
+        localStorage.setItem('equipment', JSON.stringify(defaultData));
+        defaultData.forEach(item => {
+            const row = createRow(item.name, item.location, item.date, item.nextDate, item.status);
+            document.getElementById('equipmentBody').appendChild(row);
+        });
+        updateStats();
+        return;
+    }
 
     const data = JSON.parse(saved);
     const tbody = document.getElementById('equipmentBody');
     tbody.innerHTML = '';
 
     data.forEach(item => {
-        const row = createRow(item.name, item.location, item.date, item.status);
+        const row = createRow(item.name, item.location, item.date, item.nextDate || '-', item.status);
         tbody.appendChild(row);
     });
 
@@ -275,4 +397,39 @@ window.onload = function() {
     const savedLang = localStorage.getItem('lang') || 'en';
     document.querySelector('.lang-switcher').value = savedLang;
     changeLanguage(savedLang);
+}
+function checkCalibrationAlerts() {
+    const t = translations[currentLang];
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const alertsList = document.getElementById('alertsList');
+    const alertsSection = document.getElementById('alertsSection');
+
+    alertsList.innerHTML = '';
+    let alertCount = 0;
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const nextDateStr = row.cells[3].textContent;
+        if (!nextDateStr || nextDateStr === '-') return;
+
+        const nextDate = new Date(nextDateStr);
+        const diffTime = nextDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>🔴</span> <span class="alert-overdue">${name} — ${t.alert_overdue} (${Math.abs(diffDays)} ${t.alert_days_ago})</span>`;
+            alertsList.appendChild(li);
+            alertCount++;
+        } else if (diffDays <= 30) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>🟡</span> <span>${name} — ${diffDays} ${t.alert_days_left}</span>`;
+            alertsList.appendChild(li);
+            alertCount++;
+        }
+    });
+
+    alertsSection.style.display = alertCount > 0 ? 'block' : 'none';
 }

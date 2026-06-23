@@ -520,3 +520,76 @@ footer a:hover { text-decoration: underline; }
 
 .edit-btn:hover { opacity: 1; }
 .number.danger { color: #ef4444; }
+.chart-section {
+    margin-bottom: 28px;
+}
+
+.chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.chart-card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+.alerts-section {
+    margin-bottom: 28px;
+}
+
+.alert-card {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 12px;
+    padding: 20px 24px;
+}
+
+[data-theme="dark"] .alert-card {
+    background: #422006;
+    border-color: #92400e;
+}
+
+.alert-card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 12px;
+}
+
+[data-theme="dark"] .alert-card h2 {
+    color: #fcd34d;
+}
+
+.alert-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alert-card li {
+    font-size: 0.875rem;
+    color: #78350f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+[data-theme="dark"] .alert-card li {
+    color: #fde68a;
+}
+
+.alert-overdue {
+    color: #ef4444 !important;
+    font-weight: 600;
+}

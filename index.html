@@ -34,7 +34,7 @@
     </header>
 
     <main>
-        <div class="stats">
+<div class="stats">
     <div class="card">
         <h3 data-i18n="stat_total">Total Equipment</h3>
         <p class="number" id="statTotal">0</p>
@@ -52,7 +52,20 @@
         <p class="number danger" id="statOut">0</p>
     </div>
 </div>
-
+<div class="chart-section">
+    <div class="chart-card">
+        <h2 data-i18n="chart_title">Equipment Status Overview</h2>
+        <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+        </div>
+    </div>
+</div>
+<div class="alerts-section" id="alertsSection" style="display:none;">
+    <div class="alert-card">
+        <h2 data-i18n="alerts_title">⚠️ Calibration Alerts</h2>
+        <ul id="alertsList"></ul>
+    </div>
+</div>
         <div class="equipment-list">
             <div class="list-header">
                 <h2 data-i18n="equipment_title">Equipment List</h2>
@@ -85,19 +98,25 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label data-i18n="form_date">Last Calibration</label>
-                            <input type="date" id="deviceDate" />
-                        </div>
-                        <div class="form-group">
-                            <label data-i18n="form_status">Status</label>
-                            <select id="deviceStatus">
-                                <option value="Active" data-i18n="status_active">Active</option>
-                                <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
-                                <option value="Out of Service" data-i18n="status_out">Out of Service</option>
-                            </select>
-                        </div>
-                    </div>
+    <div class="form-group">
+        <label data-i18n="form_date">Last Calibration</label>
+        <input type="date" id="deviceDate" />
+    </div>
+    <div class="form-group">
+        <label data-i18n="form_next_date">Next Calibration</label>
+        <input type="date" id="deviceNextDate" />
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-group">
+        <label data-i18n="form_status">Status</label>
+        <select id="deviceStatus">
+            <option value="Active" data-i18n="status_active">Active</option>
+            <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
+            <option value="Out of Service" data-i18n="status_out">Out of Service</option>
+        </select>
+    </div>
+</div>
                     <div class="form-actions">
                         <button class="cancel-btn" onclick="toggleModal()" data-i18n="btn_cancel">Cancel</button>
                         <button class="save-btn" onclick="addEquipment()" data-i18n="btn_save">Save Equipment</button>
@@ -112,6 +131,7 @@
                         <th data-i18n="col_location">Location</th>
                         <th data-i18n="col_date">Last Calibration</th>
                         <th data-i18n="col_status">Status</th>
+                        <th data-i18n="col_next_date">Next Calibration</th>
                         <th></th>
                     </tr>
                 </thead>
