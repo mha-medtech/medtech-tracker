@@ -80,6 +80,7 @@ alert_overdue: "Overdue",
 form_next_date: "Next Calibration",
 col_next_date: "Next Calibration",
 alert_days_ago: "days ago",
+btn_export: "⬇ Export CSV",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -107,6 +108,7 @@ alert_overdue: "Überfällig",
 form_next_date: "Nächste Kalibrierung",
 col_next_date: "Nächste Kalibrierung",
 alert_days_ago: "Tage überfällig",
+btn_export: "⬇ CSV exportieren",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
@@ -134,6 +136,7 @@ alert_overdue: "منقضی شده",
 form_next_date: "کالیبراسیون بعدی",
 col_next_date: "کالیبراسیون بعدی",
 alert_days_ago: "روز پیش منقضی شد",
+btn_export: "⬇ دانلود CSV",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -358,10 +361,17 @@ function filterTable() {
     rows.forEach(row => {
         const name = row.cells[0].textContent.toLowerCase();
         const location = row.cells[1].textContent.toLowerCase();
-        const status = row.cells[3].textContent.trim();
+        const statusEl = row.cells[4].querySelector('.status');
+        const statusKey = statusEl ? statusEl.getAttribute('data-status-key') : '';
+
+        const statusMap = {
+            'Active': 'status_active',
+            'Needs Check': 'status_needs_check',
+            'Out of Service': 'status_out'
+        };
 
         const matchSearch = name.includes(search) || location.includes(search);
-        const matchStatus = statusFilter === 'all' || status === statusFilter;
+        const matchStatus = statusFilter === 'all' || statusMap[statusFilter] === statusKey;
 
         if (matchSearch && matchStatus) {
             row.style.display = '';
@@ -377,7 +387,7 @@ function filterTable() {
             const tbody = document.getElementById('equipmentBody');
             const tr = document.createElement('tr');
             tr.id = 'noResults';
-            tr.innerHTML = `<td colspan="5" class="no-results">No equipment found.</td>`;
+            tr.innerHTML = `<td colspan="6" class="no-results">${translations[currentLang].no_results}</td>`;
             tbody.appendChild(tr);
         }
     } else {
@@ -432,4 +442,45 @@ function checkCalibrationAlerts() {
     });
 
     alertsSection.style.display = alertCount > 0 ? 'block' : 'none';
+}
+function exportCSV() {
+    const t = translations[currentLang];
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    
+    const visibleRows = Array.from(rows).filter(row => row.style.display !== 'none');
+
+    if (visibleRows.length === 0) {
+        alert(t.no_results);
+        return;
+    }
+
+    const headers = [
+        t.col_device,
+        t.col_location,
+        t.col_date,
+        t.col_next_date,
+        t.col_status
+    ];
+
+    let csv = headers.join(',') + '\n';
+
+    visibleRows.forEach(row => {
+        const cols = [
+            row.cells[0].textContent,
+            row.cells[1].textContent,
+            row.cells[2].textContent,
+            row.cells[3].textContent,
+            row.cells[4].querySelector('.status').textContent.trim()
+        ];
+        csv += cols.map(c => `"${c}"`).join(',') + '\n';
+    });
+
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `medtech-export-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
 }
