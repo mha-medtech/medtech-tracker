@@ -4,6 +4,15 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.3.1] — 2026-06-23
+### Added
+- Export to CSV with active filter support
+- UTF-8 BOM for correct Persian encoding in Excel
+
+### Fixed
+- Filter dropdown not working with multilingual status
+- Persian text encoding in CSV export
+
 ## [v1.3.0] — 2026-06-23
 ### Added
 - Interactive doughnut chart for equipment status overview (Chart.js)

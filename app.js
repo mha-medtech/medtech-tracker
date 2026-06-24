@@ -81,6 +81,12 @@ form_next_date: "Next Calibration",
 col_next_date: "Next Calibration",
 alert_days_ago: "days ago",
 btn_export: "⬇ Export CSV",
+nav_about: "About",
+about_project_title: "About the Project",
+about_project_text: "MedTech Tracker is a web-based system for managing medical equipment in clinical environments. It enables healthcare facilities to track device status, monitor calibration schedules, and export records efficiently.",
+about_dev_title: "About the Developer",
+about_dev_text: "Developed by Mohammad Hassan Abbasi, a Biomedical Engineer with over 8 years of experience in medical device regulation, inspection, and healthcare business management. Currently CEO of Kayazh Medical and pursuing an MSc in Biomedical Engineering in Switzerland.",
+about_tech_title: "Tech Stack",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -108,6 +114,12 @@ alert_overdue: "Überfällig",
 form_next_date: "Nächste Kalibrierung",
 col_next_date: "Nächste Kalibrierung",
 alert_days_ago: "Tage überfällig",
+nav_about: "Über",
+about_project_title: "Über das Projekt",
+about_project_text: "MedTech Tracker ist ein webbasiertes System zur Verwaltung medizinischer Geräte in klinischen Umgebungen.",
+about_dev_title: "Über den Entwickler",
+about_dev_text: "Entwickelt von Mohammad Hassan Abbasi, einem Biomediziningenieur mit über 8 Jahren Erfahrung in der Regulierung medizinischer Geräte und im Gesundheitsmanagement.",
+about_tech_title: "Technologie",
 btn_export: "⬇ CSV exportieren",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
@@ -136,6 +148,12 @@ alert_overdue: "منقضی شده",
 form_next_date: "کالیبراسیون بعدی",
 col_next_date: "کالیبراسیون بعدی",
 alert_days_ago: "روز پیش منقضی شد",
+nav_about: "درباره",
+about_project_title: "درباره پروژه",
+about_project_text: "مدتک ترکر یک سیستم تحت وب برای مدیریت تجهیزات پزشکی در محیط‌های بالینی است. این سیستم به مراکز درمانی کمک می‌کند وضعیت دستگاه‌ها را پیگیری کنند و برنامه کالیبراسیون را مدیریت نمایند.",
+about_dev_title: "درباره توسعه‌دهنده",
+about_dev_text: "توسعه داده شده توسط محمدحسن عباسی، مهندس پزشکی با بیش از ۸ سال تجربه در حوزه نظارت بر تجهیزات پزشکی و مدیریت کسب‌وکار سلامت. مدیرعامل شرکت کایاژ و متقاضی ارشد مهندسی پزشکی در سوئیس.",
+about_tech_title: "تکنولوژی‌ها",
 btn_export: "⬇ دانلود CSV",
 alert_days_left: "روز تا کالیبراسیون"
     }
@@ -483,4 +501,13 @@ function exportCSV() {
     a.download = `medtech-export-${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+}
+function showPage(page) {
+    document.getElementById('page-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
+    document.getElementById('page-about').style.display = page === 'about' ? 'block' : 'none';
+
+    document.querySelectorAll('#mainNav a').forEach(a => {
+        a.classList.remove('active-nav');
+    });
+    event.target.classList.add('active-nav');
 }
