@@ -221,11 +221,11 @@ function createRow(name, location, date, nextDate, status) {
                       statusClass === 'warning' ? 'status_needs_check' : 'status_out';
     const row = document.createElement('tr');
     row.innerHTML = `
-        <td>${name}</td>
-        <td>${location}</td>
-        <td>${date}</td>
-        <td>${nextDate || '-'}</td>
-        <td><span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span></td>
+        <td data-label="${t.col_device}">${name}</td>
+        <td data-label="${t.col_location}">${location}</td>
+        <td data-label="${t.col_date}">${date}</td>
+        <td data-label="${t.col_next_date}">${nextDate || '-'}</td>
+        <td data-label="${t.col_status}"><span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span></td>
         <td class="action-btns">
             <button class="edit-btn" onclick="editRow(this)">✏️</button>
             <button class="delete-btn" onclick="deleteRow(this)">🗑</button>
@@ -421,9 +421,10 @@ function toggleMenu() {
 }
 
 window.onload = function() {
-    loadEquipment();
     const savedLang = localStorage.getItem('lang') || 'en';
     document.querySelector('.lang-switcher').value = savedLang;
+    currentLang = savedLang;
+    loadEquipment();
     changeLanguage(savedLang);
 }
 function checkCalibrationAlerts() {

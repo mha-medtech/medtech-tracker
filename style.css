@@ -382,6 +382,43 @@ footer a:hover { text-decoration: underline; }
     gap: 8px;
 }
 @media (max-width: 768px) {
+    table thead {
+        display: none;
+    }
+
+    table tr {
+        display: block;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        margin-bottom: 12px;
+        padding: 12px;
+    }
+
+    table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 4px;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.82rem;
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        min-width: 100px;
+    }
+
+    .action-btns {
+        justify-content: flex-end;
+    }
     .hamburger {
         display: flex;
     }

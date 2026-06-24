@@ -4,6 +4,13 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.4.0] — 2026-06-24
+### Added
+- About page with project and developer info
+- Navigation routing between Dashboard and About
+- Active nav link highlight
+- Multilingual About page (EN/DE/FA)
+
 ## [v1.3.1] — 2026-06-23
 ### Added
 - Export to CSV with active filter support

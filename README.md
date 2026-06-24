@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-1.4.0-blue)
 ![Last Updated](https://img.shields.io/badge/updated-June%202026-green)
 ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20FA-orange)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
@@ -9,7 +9,8 @@ A web-based medical equipment tracking system designed for clinics and hospitals
 Built by a Biomedical Engineer with real-world experience in medical device regulation and management.
 
 ## 🌐 Live Demo
-👉 [mha-medtech.github.io/medtech-tracker](https://mha-medtech.github.io/medtech-tracker)
+👉 [medtracker.freedev.app](https://medtracker.freedev.app) — Full hosted version  
+👉 [mha-medtech.github.io/medtech-tracker](https://mha-medtech.github.io/medtech-tracker) — GitHub Pages version
 
 ---
 
@@ -41,7 +42,7 @@ Built by a Biomedical Engineer with real-world experience in medical device regu
 - [x] Multilingual (EN / DE / FA)
 - [x] Dark mode
 - [x] Responsive design
-- [ ] Export to CSV
+- [x] Export to CSV
 - [ ] User authentication & login
 - [ ] PHP + MySQL backend
 - [ ] Deploy on live server
@@ -50,7 +51,7 @@ Built by a Biomedical Engineer with real-world experience in medical device regu
 
 ## 👨‍💻 Developer
 **Mohammad Hassan Abbasi**
-Biomedical Engineer | CEO at Kayazh Medical | MSc Applicant
+Biomedical Engineer | CEO at Kayazh | MSc Applicant
 
 - 🌐 [kayazh.com](https://www.kayazh.com)
 - 💼 [LinkedIn](https://www.linkedin.com/in/mhabbasii/)
