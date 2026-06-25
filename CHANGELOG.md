@@ -4,6 +4,12 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.4.1] — 2026-06-24
+### Fixed
+- Mobile table labels not translating correctly
+- Language load order on page startup
+- Mobile card view for equipment table
+
 ## [v1.4.0] — 2026-06-24
 ### Added
 - About page with project and developer info

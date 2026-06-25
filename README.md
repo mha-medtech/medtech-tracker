@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.4.0-blue)
+![Version](https://img.shields.io/badge/version-1.4.1-blue)
 ![Last Updated](https://img.shields.io/badge/updated-June%202026-green)
 ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20FA-orange)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
