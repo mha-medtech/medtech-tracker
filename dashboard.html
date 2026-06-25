@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTech Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">MedTech Tracker</div>
+        <nav id="mainNav">
+    <a href="#" onclick="showPage('dashboard')" data-i18n="nav_dashboard">Dashboard</a>
+    <a href="#" onclick="showPage('about')" data-i18n="nav_about">About</a>
+</nav>
+        <div class="header-actions">
+            <select class="lang-switcher" onchange="changeLanguage(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="fa">FA</option>
+            </select>
+            <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                <span class="theme-icon">🌙</span>
+            </button>
+            <button class="hamburger" onclick="toggleMenu()" title="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+<main>
+    <div id="page-dashboard">
+        <div class="stats">
+            <div class="card">
+                <h3 data-i18n="stat_total">Total Equipment</h3>
+                <p class="number" id="statTotal">0</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="stat_active">Active</h3>
+                <p class="number good" id="statActive">0</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="stat_maintenance">Needs Maintenance</h3>
+                <p class="number warning" id="statNeeds">0</p>
+            </div>
+            <div class="card">
+                <h3 data-i18n="stat_out">Out of Service</h3>
+                <p class="number danger" id="statOut">0</p>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-card">
+                <h2 data-i18n="chart_title">Equipment Status Overview</h2>
+                <div class="chart-container">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="alerts-section" id="alertsSection" style="display:none;">
+            <div class="alert-card">
+                <h2 data-i18n="alerts_title">⚠️ Calibration Alerts</h2>
+                <ul id="alertsList"></ul>
+            </div>
+        </div>
+
+        <div class="equipment-list">
+            <div class="list-header">
+                <h2 data-i18n="equipment_title">Equipment List</h2>
+                <div class="list-controls">
+                    <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search equipment..." oninput="filterTable()" />
+                    <select id="statusFilter" onchange="filterTable()">
+                        <option value="all" data-i18n="filter_all">All Status</option>
+                        <option value="Active" data-i18n="status_active">Active</option>
+                        <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
+                        <option value="Out of Service" data-i18n="status_out">Out of Service</option>
+                    </select>
+                    <button class="export-btn" onclick="exportCSV()" data-i18n="btn_export">⬇ Export CSV</button>
+                    <button class="add-btn" onclick="toggleModal()" data-i18n="btn_add">+ Add Equipment</button>
+                </div>
+            </div>
+
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3 data-i18n="modal_title">Add New Equipment</h3>
+                        <button class="close-btn" onclick="toggleModal()">✕</button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="form_name">Device Name</label>
+                            <input type="text" id="deviceName" data-i18n-placeholder="form_name_ph" placeholder="e.g. ECG Monitor" />
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_location">Location</label>
+                            <input type="text" id="deviceLocation" data-i18n-placeholder="form_location_ph" placeholder="e.g. ICU - Room 3" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="form_date">Last Calibration</label>
+                            <input type="date" id="deviceDate" />
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="form_next_date">Next Calibration</label>
+                            <input type="date" id="deviceNextDate" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="form_status">Status</label>
+                            <select id="deviceStatus">
+                                <option value="Active" data-i18n="status_active">Active</option>
+                                <option value="Needs Check" data-i18n="status_needs_check">Needs Check</option>
+                                <option value="Out of Service" data-i18n="status_out">Out of Service</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="cancel-btn" onclick="toggleModal()" data-i18n="btn_cancel">Cancel</button>
+                        <button class="save-btn" onclick="addEquipment()" data-i18n="btn_save">Save Equipment</button>
+                    </div>
+                </div>
+            </div>
+
+            <table id="equipmentTable">
+                <thead>
+                    <tr>
+                        <th data-i18n="col_device">Device</th>
+                        <th data-i18n="col_location">Location</th>
+                        <th data-i18n="col_date">Last Calibration</th>
+                        <th data-i18n="col_next_date">Next Calibration</th>
+                        <th data-i18n="col_status">Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="equipmentBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="page-about" style="display:none;">
+        <div class="about-card">
+            <div class="about-header">
+                <div class="about-avatar">MHA</div>
+                <div>
+                    <h1>MedTech Tracker</h1>
+                    <p class="about-version">v1.4.1 — June 2026</p>
+                </div>
+            </div>
+
+            <div class="about-section">
+                <h2 data-i18n="about_project_title">About the Project</h2>
+                <p data-i18n="about_project_text">MedTech Tracker is a web-based system for managing medical equipment in clinical environments.</p>
+            </div>
+
+            <div class="about-section">
+                <h2 data-i18n="about_dev_title">About the Developer</h2>
+                <p data-i18n="about_dev_text">Developed by Mohammad Hassan Abbasi, a Biomedical Engineer with over 8 years of experience in medical device regulation and healthcare business management.</p>
+            </div>
+
+            <div class="about-section">
+                <h2 data-i18n="about_tech_title">Tech Stack</h2>
+                <div class="tech-tags">
+                    <span>HTML5</span>
+                    <span>CSS3</span>
+                    <span>JavaScript</span>
+                    <span>Chart.js</span>
+                    <span>localStorage</span>
+                    <span>PHP (coming soon)</span>
+                    <span>MySQL (coming soon)</span>
+                </div>
+            </div>
+
+            <div class="about-links">
+                <a href="https://www.kayazh.com" target="_blank">🌐 kayazh.com</a>
+                <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">💼 LinkedIn</a>
+                <a href="https://github.com/mha-medtech" target="_blank">🐙 GitHub</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+    <footer>
+        <p>Designed & Developed by
+            <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">
+                MH Abbasi
+            </a>
+            &nbsp;|&nbsp; v1.4.1
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
