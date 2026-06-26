@@ -4,6 +4,22 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.5.1] — 2026-06-26
+### Added
+- Warranty management with purchase date and expiry tracking
+- Warranty alert system (separate from calibration alerts)
+- Warranty status badges (Valid / Expiring soon / Expired)
+- Loading spinner for dashboard data fetch
+- Cache busting version params for CSS and JS files
+- Shared lang.js for unified language management across all pages
+- Login and registration page with multilingual support
+
+### Fixed
+- Language not persisting across pages
+- Sign out button not translating without page refresh
+- Warranty badges not updating on language change
+
+
 ## [v1.5.0] — 2026-06-25
 ### Added
 - Landing page with multilingual support
