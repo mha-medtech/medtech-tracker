@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedTech Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.5.0">
 </head>
 <body>
-
+<div class="spinner-overlay" id="spinnerOverlay">
+    <div class="spinner"></div>
+    <div class="spinner-text" id="spinnerText">Loading...</div>
+</div>
     <header>
         <div class="logo">MedTech Tracker</div>
         <nav id="mainNav">
@@ -62,6 +65,12 @@
         </div>
 
         <div class="alerts-section" id="alertsSection" style="display:none;">
+            <div class="alerts-section" id="warrantyAlertsSection" style="display:none;">
+    <div class="alert-card warranty-alert-card">
+        <h2 data-i18n="warranty_alerts_title">🛡️ Warranty Alerts</h2>
+        <ul id="warrantyAlertsList"></ul>
+    </div>
+</div>
             <div class="alert-card">
                 <h2 data-i18n="alerts_title">⚠️ Calibration Alerts</h2>
                 <ul id="alertsList"></ul>
@@ -120,6 +129,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-row">
+    <div class="form-group">
+        <label data-i18n="form_purchase">Purchase Date</label>
+        <input type="date" id="devicePurchase" />
+    </div>
+    <div class="form-group">
+        <label data-i18n="form_warranty">Warranty Expiry</label>
+        <input type="date" id="deviceWarranty" />
+    </div>
+</div>
                     <div class="form-actions">
                         <button class="cancel-btn" onclick="toggleModal()" data-i18n="btn_cancel">Cancel</button>
                         <button class="save-btn" onclick="addEquipment()" data-i18n="btn_save">Save Equipment</button>
@@ -135,6 +154,7 @@
                         <th data-i18n="col_date">Last Calibration</th>
                         <th data-i18n="col_next_date">Next Calibration</th>
                         <th data-i18n="col_status">Status</th>
+                        <th data-i18n="col_warranty">Warranty</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -189,13 +209,14 @@
     <footer>
         <p>Designed & Developed by
             <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">
-                MH-Abbasi
+                MH Abbasi
             </a>
             &nbsp;|&nbsp; v1.4.1
         </p>
     </footer>
-
-    <script src="app.js"></script>
+<script src="lang.js?v=1.5.0"></script>
+<script src="app.js?v=1.5.0"></script>
+<script src="auth.js?v=1.5.0"></script>
 
 </body>
 </html>

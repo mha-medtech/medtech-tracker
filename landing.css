@@ -516,3 +516,26 @@ footer {
     .section-inner h2 { font-size: 26px; }
     .cta h2 { font-size: 26px; }
 }
+
+.mobile-lang {
+    display: flex;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.lang-btn {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s;
+}
+
+.lang-btn:hover {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+}

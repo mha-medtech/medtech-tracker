@@ -133,7 +133,7 @@ function changeLang(lang) {
         if (t[key]) el.textContent = t[key];
     });
 
-    localStorage.setItem('landing_lang', lang);
+    setLang(lang);
 }
 
 function toggleMenu() {
@@ -141,7 +141,7 @@ function toggleMenu() {
 }
 
 window.onload = function() {
-    const saved = localStorage.getItem('landing_lang') || 'en';
+    const saved = getLang();
     document.querySelector('.lang-select').value = saved;
     changeLang(saved);
 

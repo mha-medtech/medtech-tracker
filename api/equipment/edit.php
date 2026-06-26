@@ -15,6 +15,8 @@ $location = trim($data['location'] ?? '');
 $last_calibration = $data['last_calibration'] ?? null;
 $next_calibration = $data['next_calibration'] ?? null;
 $status = $data['status'] ?? 'Active';
+$purchase_date = $data['purchase_date'] ?? null;
+$warranty_expiry = $data['warranty_expiry'] ?? null;
 
 if (!$id || !$user_id || !$name || !$location || !$last_calibration) {
     echo json_encode(['success' => false, 'message' => 'Required fields are missing']);
@@ -28,8 +30,8 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    $stmt = $pdo->prepare('UPDATE equipment SET name=?, location=?, last_calibration=?, next_calibration=?, status=? WHERE id=? AND user_id=?');
-    $stmt->execute([$name, $location, $last_calibration, $next_calibration, $status, $id, $user_id]);
+$stmt = $pdo->prepare('UPDATE equipment SET name=?, location=?, last_calibration=?, next_calibration=?, status=?, purchase_date=?, warranty_expiry=? WHERE id=? AND user_id=?');
+$stmt->execute([$name, $location, $last_calibration, $next_calibration, $status, $purchase_date, $warranty_expiry, $id, $user_id]);
 
     if ($stmt->rowCount() === 0) {
         echo json_encode(['success' => false, 'message' => 'Equipment not found or unauthorized']);

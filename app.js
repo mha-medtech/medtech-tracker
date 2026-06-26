@@ -87,6 +87,16 @@ about_project_text: "MedTech Tracker is a web-based system for managing medical 
 about_dev_title: "About the Developer",
 about_dev_text: "Developed by Mohammad Hassan Abbasi, a Biomedical Engineer with over 8 years of experience in medical device regulation, inspection, and healthcare business management. Currently CEO of Kayazh Medical and pursuing an MSc in Biomedical Engineering in Switzerland.",
 about_tech_title: "Tech Stack",
+        loading: "Loading your equipment...",
+        form_purchase: "Purchase Date",
+form_warranty: "Warranty Expiry",
+col_warranty: "Warranty",
+warranty_ok: "Valid",
+warranty_expiring: "Expiring soon",
+warranty_expired: "Expired",
+alert_warranty_expired: "Warranty expired",
+alert_warranty_expiring: "days until warranty expires",
+        warranty_alerts_title: "🛡️ Warranty Alerts",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -121,6 +131,16 @@ about_dev_title: "Über den Entwickler",
 about_dev_text: "Entwickelt von Mohammad Hassan Abbasi, einem Biomediziningenieur mit über 8 Jahren Erfahrung in der Regulierung medizinischer Geräte und im Gesundheitsmanagement.",
 about_tech_title: "Technologie",
 btn_export: "⬇ CSV exportieren",
+        loading: "Geräte werden geladen...",
+        form_purchase: "Kaufdatum",
+form_warranty: "Garantieablauf",
+col_warranty: "Garantie",
+warranty_ok: "Gültig",
+warranty_expiring: "Läuft bald ab",
+warranty_expired: "Abgelaufen",
+alert_warranty_expired: "Garantie abgelaufen",
+alert_warranty_expiring: "Tage bis Garantieablauf",
+        warranty_alerts_title: "🛡️ Garantiewarnungen",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
@@ -155,6 +175,16 @@ about_dev_title: "درباره توسعه‌دهنده",
 about_dev_text: "توسعه داده شده توسط محمدحسن عباسی، مهندس پزشکی با بیش از ۸ سال تجربه در حوزه نظارت بر تجهیزات پزشکی و مدیریت کسب‌وکار سلامت. مدیرعامل شرکت کایاژ و متقاضی ارشد مهندسی پزشکی در سوئیس.",
 about_tech_title: "تکنولوژی‌ها",
 btn_export: "⬇ دانلود CSV",
+        loading: "در حال بارگذاری تجهیزات...",
+        form_purchase: "تاریخ خرید",
+form_warranty: "انقضای گارانتی",
+col_warranty: "گارانتی",
+warranty_ok: "معتبر",
+warranty_expiring: "به زودی منقضی",
+warranty_expired: "منقضی شده",
+alert_warranty_expired: "گارانتی منقضی شده",
+alert_warranty_expiring: "روز تا انقضای گارانتی",
+        warranty_alerts_title: "🛡️ هشدارهای گارانتی",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -179,9 +209,17 @@ function changeLanguage(lang) {
         const key = el.getAttribute('data-status-key');
         if (t[key]) el.textContent = t[key];
     });
-    localStorage.setItem('lang', lang);
+    setLang(lang);
     updateChart();
+    updateWarrantyBadges();
     checkCalibrationAlerts();
+    checkWarrantyAlerts();
+    updateWarrantyBadges();
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        const logoutLabels = { en: 'Sign out', de: 'Abmelden', fa: 'خروج' };
+        logoutBtn.textContent = logoutLabels[lang] || 'Sign out';
+    }
 }
 
 function toggleTheme() {
@@ -211,21 +249,45 @@ function clearForm() {
     document.getElementById('deviceDate').value = '';
     document.getElementById('deviceNextDate').value = '';
     document.getElementById('deviceStatus').value = 'Active';
+    document.getElementById('devicePurchase').value = '';
+    document.getElementById('deviceWarranty').value = '';
 }
 
-function createRow(name, location, date, nextDate, status) {
+function createRow(name, location, date, nextDate, status, dbId = null, purchase = null, warranty = null) {
     const statusClass = status === 'Active' || status === 'Aktiv' || status === 'فعال' ? 'good' :
                         status === 'Needs Check' || status === 'Prüfung erforderlich' || status === 'نیاز به بررسی' ? 'warning' : 'danger';
     const t = translations[currentLang];
     const statusKey = statusClass === 'good' ? 'status_active' :
                       statusClass === 'warning' ? 'status_needs_check' : 'status_out';
+
+    let warrantyBadge = '-';
+    if (warranty && warranty !== '-' && warranty !== 'null') {
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const wDate = new Date(warranty);
+        const diff = Math.ceil((wDate - today) / (1000 * 60 * 60 * 24));
+
+        if (diff < 0) {
+            warrantyBadge = `<span class="status danger">${t.warranty_expired}</span>`;
+        } else if (diff <= 30) {
+            warrantyBadge = `<span class="status warning">${t.warranty_expiring}</span>`;
+        } else {
+            warrantyBadge = `<span class="status good">${t.warranty_ok}</span>`;
+        }
+    }
+
     const row = document.createElement('tr');
+    if (dbId) row.setAttribute('data-id', dbId);
+    if (purchase) row.setAttribute('data-purchase', purchase);
+    if (warranty) row.setAttribute('data-warranty', warranty);
+
     row.innerHTML = `
         <td data-label="${t.col_device}">${name}</td>
         <td data-label="${t.col_location}">${location}</td>
         <td data-label="${t.col_date}">${date}</td>
         <td data-label="${t.col_next_date}">${nextDate || '-'}</td>
         <td data-label="${t.col_status}"><span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span></td>
+        <td data-label="${t.col_warranty}">${warrantyBadge}</td>
         <td class="action-btns">
             <button class="edit-btn" onclick="editRow(this)">✏️</button>
             <button class="delete-btn" onclick="deleteRow(this)">🗑</button>
@@ -234,25 +296,53 @@ function createRow(name, location, date, nextDate, status) {
     return row;
 }
 
-function addEquipment() {
+async function addEquipment() {
+    const user = getUser();
+    if (!user) return;
+
     const name = document.getElementById('deviceName').value.trim();
     const location = document.getElementById('deviceLocation').value.trim();
     const date = document.getElementById('deviceDate').value;
     const nextDate = document.getElementById('deviceNextDate').value;
     const status = document.getElementById('deviceStatus').value;
+    const purchase = document.getElementById('devicePurchase').value;
+    const warranty = document.getElementById('deviceWarranty').value;
 
     if (!name || !location || !date) {
         alert('Please fill in all fields.');
         return;
     }
 
-    const tbody = document.getElementById('equipmentBody');
-    const row = createRow(name, location, date, nextDate, status);
-    tbody.appendChild(row);
+    try {
+        const res = await fetch(`${API}/equipment/add.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id,
+                name, location,
+                last_calibration: date,
+                next_calibration: nextDate || null,
+                status,
+                purchase_date: purchase || null,
+                warranty_expiry: warranty || null
+            })
+        });
 
-    updateStats();
-    saveEquipment();
-    toggleModal();
+        const data = await res.json();
+
+        if (data.success) {
+            const tbody = document.getElementById('equipmentBody');
+            const row = createRow(name, location, date, nextDate || '-', status, data.id, purchase, warranty);
+            tbody.appendChild(row);
+            updateStats();
+            toggleModal();
+        } else {
+            alert(data.message);
+        }
+
+    } catch (err) {
+        alert('Connection error. Please try again.');
+    }
 }
 
 function editRow(btn) {
@@ -264,6 +354,8 @@ function editRow(btn) {
     document.getElementById('deviceDate').value = cells[2].textContent;
     document.getElementById('deviceNextDate').value = cells[3].textContent === '-' ? '' : cells[3].textContent;
     document.getElementById('deviceStatus').value = cells[4].querySelector('.status').textContent.trim();
+    document.getElementById('devicePurchase').value = row.getAttribute('data-purchase') || '';
+    document.getElementById('deviceWarranty').value = row.getAttribute('data-warranty') || '';
 
     document.querySelector('.save-btn').onclick = function() {
         saveEdit(row);
@@ -272,41 +364,89 @@ function editRow(btn) {
     toggleModal();
 }
 
-function saveEdit(row) {
+async function saveEdit(row) {
+    const user = getUser();
+    if (!user) return;
+
     const name = document.getElementById('deviceName').value.trim();
     const location = document.getElementById('deviceLocation').value.trim();
     const date = document.getElementById('deviceDate').value;
     const nextDate = document.getElementById('deviceNextDate').value;
     const status = document.getElementById('deviceStatus').value;
+    const purchase = document.getElementById('devicePurchase').value;
+    const warranty = document.getElementById('deviceWarranty').value;
+    const dbId = row.getAttribute('data-id');
 
     if (!name || !location || !date) {
         alert('Please fill in all fields.');
         return;
     }
 
-    const statusClass = status === 'Active' || status === 'Aktiv' || status === 'فعال' ? 'good' :
-                        status === 'Needs Check' || status === 'Prüfung erforderlich' || status === 'نیاز به بررسی' ? 'warning' : 'danger';
-    const statusKey = statusClass === 'good' ? 'status_active' :
-                      statusClass === 'warning' ? 'status_needs_check' : 'status_out';
-    const t = translations[currentLang];
+    try {
+        const res = await fetch(`${API}/equipment/edit.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: dbId,
+                user_id: user.id,
+                name, location,
+                last_calibration: date,
+                next_calibration: nextDate || null,
+                status,
+                purchase_date: purchase || null,
+                warranty_expiry: warranty || null
+            })
+        });
 
-    row.cells[0].textContent = name;
-    row.cells[1].textContent = location;
-    row.cells[2].textContent = date;
-    row.cells[3].textContent = nextDate || '-';
-    row.cells[4].innerHTML = `<span class="status ${statusClass}" data-status-key="${statusKey}">${t[statusKey]}</span>`;
+        const data = await res.json();
 
-    document.querySelector('.save-btn').onclick = addEquipment;
+        if (data.success) {
+            const newRow = createRow(name, location, date, nextDate || '-', status, dbId, purchase, warranty);
+            row.replaceWith(newRow);
+            document.querySelector('.save-btn').onclick = addEquipment;
+            updateStats();
+            toggleModal();
+        } else {
+            alert(data.message);
+        }
 
-    updateStats();
-    saveEquipment();
-    toggleModal();
+    } catch (err) {
+        alert('Connection error. Please try again.');
+    }
 }
 
-function deleteRow(btn) {
-    btn.closest('tr').remove();
-    updateStats();
-    saveEquipment();
+async function deleteRow(btn) {
+    const user = getUser();
+    if (!user) return;
+
+    const row = btn.closest('tr');
+    const dbId = row.getAttribute('data-id');
+
+    if (!dbId) {
+        row.remove();
+        updateStats();
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/equipment/delete.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: dbId, user_id: user.id })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            row.remove();
+            updateStats();
+        } else {
+            alert(data.message);
+        }
+
+    } catch (err) {
+        alert('Connection error. Please try again.');
+    }
 }
 
 function updateStats() {
@@ -322,52 +462,76 @@ function updateStats() {
     document.getElementById('statOut').textContent = outOfService;
         updateChart();
         checkCalibrationAlerts();
+    checkWarrantyAlerts();
 }
 
-function saveEquipment() {
-    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
-    const data = [];
-    rows.forEach(row => {
-        data.push({
-            name: row.cells[0].textContent,
-            location: row.cells[1].textContent,
-            date: row.cells[2].textContent,
-            nextDate: row.cells[3].textContent,
-            status: row.cells[4].querySelector('.status').textContent.trim()
-        });
-    });
-    localStorage.setItem('equipment', JSON.stringify(data));
-}
+const API = 'https://medtracker.freedev.app/api';
 
-function loadEquipment() {
-    const saved = localStorage.getItem('equipment');
-    if (!saved) {
-        const defaultData = [
-            { name: "ECG Monitor", location: "ICU - Room 3", date: "2024-06-01", nextDate: "2025-06-01", status: "Active" },
-            { name: "Patient Monitor", location: "Emergency", date: "2023-09-05", nextDate: "2024-09-05", status: "Needs Check" },
-            { name: "Surgical Suction", location: "OR - Room 1", date: "2025-01-20", nextDate: "2026-07-20", status: "Active" },
-            { name: "Dental Unit", location: "Dental Clinic", date: "2024-03-10", nextDate: "2025-03-10", status: "Out of Service" },
-            { name: "Pulse Oximeter", location: "Ward B", date: "2025-05-01", nextDate: "2026-05-01", status: "Active" }
-        ];
-        localStorage.setItem('equipment', JSON.stringify(defaultData));
-        defaultData.forEach(item => {
-            const row = createRow(item.name, item.location, item.date, item.nextDate, item.status);
-            document.getElementById('equipmentBody').appendChild(row);
+async function loadEquipment() {
+    const user = getUser();
+    if (!user) return;
+
+    showSpinner();
+
+    try {
+        const res = await fetch(`${API}/equipment/get.php?user_id=${user.id}`);
+        const data = await res.json();
+
+        if (!data.success) {
+            hideSpinner();
+            return;
+        }
+
+        const tbody = document.getElementById('equipmentBody');
+        tbody.innerHTML = '';
+
+        if (data.data.length === 0) {
+            loadDefaultData();
+            hideSpinner();
+            return;
+        }
+
+        data.data.forEach(item => {
+            const row = createRow(
+                item.name,
+                item.location,
+                item.last_calibration,
+                item.next_calibration || '-',
+                item.status,
+                item.id,
+                item.purchase_date || null,
+                item.warranty_expiry || null
+            );
+            tbody.appendChild(row);
         });
+
         updateStats();
-        return;
+        hideSpinner();
+
+    } catch (err) {
+        console.error('Load error:', err);
+        loadDefaultData();
+        hideSpinner();
     }
+}
 
-    const data = JSON.parse(saved);
-    const tbody = document.getElementById('equipmentBody');
-    tbody.innerHTML = '';
+function showSpinner() {
+    const overlay = document.getElementById('spinnerOverlay');
+    const text = document.getElementById('spinnerText');
+    if (overlay) overlay.classList.remove('hidden');
+    if (text) {
+        const t = translations[currentLang];
+        text.textContent = t && t.loading ? t.loading : 'Loading...';
+    }
+}
 
-    data.forEach(item => {
-        const row = createRow(item.name, item.location, item.date, item.nextDate || '-', item.status);
-        tbody.appendChild(row);
-    });
+function hideSpinner() {
+    const overlay = document.getElementById('spinnerOverlay');
+    if (overlay) overlay.classList.add('hidden');
+}
 
-    updateStats();
+async function saveEquipment() {
+    // دیگه نیازی به save نیست — هر عملیات مستقیم به API میره
 }
 
 function filterTable() {
@@ -421,7 +585,7 @@ function toggleMenu() {
 }
 
 window.onload = function() {
-    const savedLang = localStorage.getItem('lang') || 'en';
+    const savedLang = getLang();
     document.querySelector('.lang-switcher').value = savedLang;
     currentLang = savedLang;
     loadEquipment();
@@ -511,4 +675,62 @@ function showPage(page) {
         a.classList.remove('active-nav');
     });
     event.target.classList.add('active-nav');
+}
+
+function updateWarrantyBadges() {
+    const t = translations[currentLang];
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    document.querySelectorAll('#equipmentBody tr').forEach(row => {
+        const warranty = row.getAttribute('data-warranty');
+        if (!warranty || warranty === '-' || warranty === 'null') return;
+
+        const wDate = new Date(warranty);
+        const diff = Math.ceil((wDate - today) / (1000 * 60 * 60 * 24));
+        const cell = row.cells[5];
+        if (!cell) return;
+
+        if (diff < 0) {
+            cell.innerHTML = `<span class="status danger">${t.warranty_expired}</span>`;
+        } else if (diff <= 30) {
+            cell.innerHTML = `<span class="status warning">${t.warranty_expiring}</span>`;
+        } else {
+            cell.innerHTML = `<span class="status good">${t.warranty_ok}</span>`;
+        }
+    });
+}
+function checkWarrantyAlerts() {
+    const t = translations[currentLang];
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const list = document.getElementById('warrantyAlertsList');
+    const section = document.getElementById('warrantyAlertsSection');
+
+    list.innerHTML = '';
+    let count = 0;
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const warranty = row.getAttribute('data-warranty');
+        if (!warranty || warranty === '-' || warranty === 'null') return;
+
+        const wDate = new Date(warranty);
+        const diff = Math.ceil((wDate - today) / (1000 * 60 * 60 * 24));
+
+        if (diff < 0) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>🔴</span> <span class="alert-overdue">${name} — ${t.warranty_expired} (${Math.abs(diff)} ${t.alert_days_ago})</span>`;
+            list.appendChild(li);
+            count++;
+        } else if (diff <= 30) {
+            const li = document.createElement('li');
+            li.innerHTML = `<span>🟡</span> <span>${name} — ${diff} ${t.alert_warranty_expiring}</span>`;
+            list.appendChild(li);
+            count++;
+        }
+    });
+
+    section.style.display = count > 0 ? 'block' : 'none';
 }

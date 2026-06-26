@@ -4,6 +4,14 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.5.0] — 2026-06-25
+### Added
+- Landing page with multilingual support
+- Login and registration system
+- PHP/MySQL backend integration
+- Session management and logout
+- Equipment data synced with database
+
 ## [v1.4.1] — 2026-06-24
 ### Fixed
 - Mobile table labels not translating correctly

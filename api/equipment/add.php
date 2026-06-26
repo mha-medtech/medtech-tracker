@@ -14,6 +14,8 @@ $location = trim($data['location'] ?? '');
 $last_calibration = $data['last_calibration'] ?? null;
 $next_calibration = $data['next_calibration'] ?? null;
 $status = $data['status'] ?? 'Active';
+$purchase_date = $data['purchase_date'] ?? null;
+$warranty_expiry = $data['warranty_expiry'] ?? null;
 
 if (!$user_id || !$name || !$location || !$last_calibration) {
     echo json_encode(['success' => false, 'message' => 'Required fields are missing']);
@@ -27,8 +29,8 @@ if (!in_array($status, $allowed_status)) {
 }
 
 try {
-    $stmt = $pdo->prepare('INSERT INTO equipment (user_id, name, location, last_calibration, next_calibration, status) VALUES (?, ?, ?, ?, ?, ?)');
-    $stmt->execute([$user_id, $name, $location, $last_calibration, $next_calibration, $status]);
+$stmt = $pdo->prepare('INSERT INTO equipment (user_id, name, location, last_calibration, next_calibration, status, purchase_date, warranty_expiry) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+$stmt->execute([$user_id, $name, $location, $last_calibration, $next_calibration, $status, $purchase_date, $warranty_expiry]);
 
     $id = $pdo->lastInsertId();
 
