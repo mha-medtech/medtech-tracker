@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.5.0-blue)
+![Version](https://img.shields.io/badge/version-1.5.1-blue)
 ![Last Updated](https://img.shields.io/badge/updated-June%202026-green)
 ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20FA-orange)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
@@ -12,10 +12,11 @@ Built by a Biomedical Engineer with 8+ years of real-world experience in medical
 ---
 
 ## 🌐 Live
-| Version | URL |
-|---|---|
-| Full hosted version | [medtracker.freedev.app](https://medtracker.freedev.app) |
-| GitHub Pages (frontend) | [mha-medtech.github.io/medtech-tracker](https://mha-medtech.github.io/medtech-tracker) |
+
+| Version | URL | Notes |
+|---|---|---|
+| ✅ Full version (PHP + MySQL) | [medtracker.freedev.app](https://medtracker.freedev.app) | Login required |
+| 👀 Frontend demo (no database) | [mha-medtech.github.io/medtech-tracker](https://mha-medtech.github.io/medtech-tracker) | Static preview only |
 
 ---
 
@@ -24,6 +25,7 @@ Built by a Biomedical Engineer with 8+ years of real-world experience in medical
 - 📊 Real-time dashboard with equipment statistics
 - 📈 Interactive doughnut chart (Chart.js)
 - ⚠️ Calibration alert system — overdue and upcoming warnings
+- 🛡️ Warranty management with expiry alerts
 - ➕ Add, edit, and delete equipment records
 - 🔍 Search and filter by status
 - 🌙 Dark / Light mode toggle
@@ -61,6 +63,8 @@ medtech-tracker/
 
 ├── auth.js             # Session management
 
+├── lang.js             # Shared language system
+
 ├── landing.css         # Landing page styles
 
 ├── landing.js          # Landing page logic
@@ -96,12 +100,13 @@ medtech-tracker/
 - [x] User authentication (register / login / logout)
 - [x] Equipment CRUD (Add / Edit / Delete)
 - [x] Calibration alert system
+- [x] Warranty management with expiry alerts
 - [x] Multilingual — EN / DE / FA
 - [x] Dark mode
-- [x] Responsive design
+- [x] Responsive design with hamburger menu
 - [x] Export to CSV
 - [x] PHP + MySQL backend
-- [ ] Warranty management
+- [x] Loading spinner
 - [ ] Repair history tracking
 - [ ] Multi-user clinic accounts
 - [ ] Deploy on dedicated server
@@ -112,8 +117,9 @@ medtech-tracker/
 1. Clone the repository
 2. Copy `api/config.example.php` to `api/config.php`
 3. Add your database credentials to `config.php`
-4. Import the database schema
-5. Open `index.html` in your browser
+4. Run the SQL schema in phpMyAdmin
+5. Upload files to your hosting
+6. Open `index.html` in your browser
 
 ---
 

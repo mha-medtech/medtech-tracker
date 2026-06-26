@@ -97,6 +97,10 @@ warranty_expired: "Expired",
 alert_warranty_expired: "Warranty expired",
 alert_warranty_expiring: "days until warranty expires",
         warranty_alerts_title: "🛡️ Warranty Alerts",
+        nav_warranty: "Warranty",
+nav_maintenance: "Maintenance",
+nav_reports: "Reports",
+warranty_page_title: "Warranty Management",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -141,6 +145,10 @@ warranty_expired: "Abgelaufen",
 alert_warranty_expired: "Garantie abgelaufen",
 alert_warranty_expiring: "Tage bis Garantieablauf",
         warranty_alerts_title: "🛡️ Garantiewarnungen",
+        nav_warranty: "Garantie",
+nav_maintenance: "Wartung",
+nav_reports: "Berichte",
+warranty_page_title: "Garantieverwaltung",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
@@ -185,6 +193,10 @@ warranty_expired: "منقضی شده",
 alert_warranty_expired: "گارانتی منقضی شده",
 alert_warranty_expiring: "روز تا انقضای گارانتی",
         warranty_alerts_title: "🛡️ هشدارهای گارانتی",
+        nav_warranty: "گارانتی",
+nav_maintenance: "تعمیرات",
+nav_reports: "گزارش‌ها",
+warranty_page_title: "مدیریت گارانتی",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -219,6 +231,18 @@ function changeLanguage(lang) {
     if (logoutBtn) {
         const logoutLabels = { en: 'Sign out', de: 'Abmelden', fa: 'خروج' };
         logoutBtn.textContent = logoutLabels[lang] || 'Sign out';
+    }
+    const welcomeMsg = document.getElementById('welcomeMsg');
+    if (welcomeMsg) {
+        const user = getUser();
+        if (user) {
+            const welcomeLabels = {
+                en: `Welcome, ${user.name}`,
+                de: `Willkommen, ${user.name}`,
+                fa: `خوش آمدید، ${user.name}`
+            };
+            welcomeMsg.textContent = welcomeLabels[lang] || `Welcome, ${user.name}`;
+        }
     }
 }
 
@@ -586,8 +610,30 @@ function toggleMenu() {
 
 window.onload = function() {
     const savedLang = getLang();
-    document.querySelector('.lang-switcher').value = savedLang;
+    const langSwitcher = document.querySelector('.lang-switcher');
+    if (langSwitcher) langSwitcher.value = savedLang;
     currentLang = savedLang;
+
+    const user = getUser();
+    if (user) {
+        const avatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const userClinic = document.getElementById('userClinic');
+        const welcomeMsg = document.getElementById('welcomeMsg');
+    if (welcomeMsg && user) {
+        const welcomeLabels = {
+            en: `Welcome, ${user.name}`,
+            de: `Willkommen, ${user.name}`,
+            fa: `خوش آمدید، ${user.name}`
+        };
+        welcomeMsg.textContent = welcomeLabels[savedLang] || `Welcome, ${user.name}`;
+    }
+
+        if (avatar) avatar.textContent = user.name.charAt(0).toUpperCase();
+        if (userName) userName.textContent = user.name;
+        if (userClinic) userClinic.textContent = user.clinic_name;
+    }
+
     loadEquipment();
     changeLanguage(savedLang);
 }
@@ -667,14 +713,31 @@ function exportCSV() {
     a.click();
     URL.revokeObjectURL(url);
 }
-function showPage(page) {
-    document.getElementById('page-dashboard').style.display = page === 'dashboard' ? 'block' : 'none';
-    document.getElementById('page-about').style.display = page === 'about' ? 'block' : 'none';
+const pageTitles = {
+    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', about: 'About' },
+    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', about: 'Über' },
+    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', about: 'درباره' }
+};
 
-    document.querySelectorAll('#mainNav a').forEach(a => {
-        a.classList.remove('active-nav');
+function showPage(page) {
+    const pages = ['dashboard', 'equipment', 'warranty', 'about'];
+    pages.forEach(p => {
+        const el = document.getElementById(`page-${p}`);
+        if (el) el.style.display = p === page ? 'block' : 'none';
     });
-    event.target.classList.add('active-nav');
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+
+    event.currentTarget.classList.add('active');
+
+    const titles = pageTitles[currentLang] || pageTitles['en'];
+    const titleEl = document.getElementById('pageTitle');
+    if (titleEl) titleEl.textContent = titles[page] || page;
+
+    if (page === 'warranty') updateWarrantyPage();
+    if (window.innerWidth <= 768) closeSidebar();
 }
 
 function updateWarrantyBadges() {
@@ -733,4 +796,53 @@ function checkWarrantyAlerts() {
     });
 
     section.style.display = count > 0 ? 'block' : 'none';
+}
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+}
+function updateWarrantyPage() {
+    const t = translations[currentLang];
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const tbody = document.getElementById('warrantyBody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const location = row.cells[1].textContent;
+        const purchase = row.getAttribute('data-purchase') || '-';
+        const warranty = row.getAttribute('data-warranty') || '-';
+
+        let warrantyBadge = '-';
+        if (warranty && warranty !== '-' && warranty !== 'null') {
+            const wDate = new Date(warranty);
+            const diff = Math.ceil((wDate - today) / (1000 * 60 * 60 * 24));
+            if (diff < 0) {
+                warrantyBadge = `<span class="status danger">${t.warranty_expired}</span>`;
+            } else if (diff <= 30) {
+                warrantyBadge = `<span class="status warning">${t.warranty_expiring} (${diff}d)</span>`;
+            } else {
+                warrantyBadge = `<span class="status good">${t.warranty_ok}</span>`;
+            }
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${name}</td>
+            <td>${location}</td>
+            <td>${purchase}</td>
+            <td>${warranty}</td>
+            <td>${warrantyBadge}</td>
+        `;
+        tbody.appendChild(tr);
+    });
 }

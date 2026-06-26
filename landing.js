@@ -145,15 +145,42 @@ window.onload = function() {
     document.querySelector('.lang-select').value = saved;
     changeLang(saved);
 
-    // اگه کاربر لاگین کرده بود دکمه رو عوض کن
     const user = localStorage.getItem('user');
     if (user) {
-        const parsed = JSON.parse(user);
-        document.querySelectorAll('.btn-solid, .btn-solid-lg').forEach(btn => {
+        const goToDashboard = {
+            en: 'Go to dashboard',
+            de: 'Zum Dashboard',
+            fa: 'رفتن به داشبورد'
+        };
+        const label = goToDashboard[saved] || 'Go to dashboard';
+
+        // دکمه‌های هدر
+        document.querySelectorAll('.btn-outline, .btn-solid').forEach(btn => {
+            btn.style.display = 'none';
+        });
+
+        // یه دکمه واحد بذار
+        const headerActions = document.querySelector('.header-actions');
+        if (headerActions) {
+            const btn = document.createElement('a');
+            btn.href = 'dashboard.html';
+            btn.className = 'btn-solid';
+            btn.textContent = label;
+            headerActions.appendChild(btn);
+        }
+
+        // دکمه‌های hero
+        document.querySelectorAll('.btn-solid-lg').forEach(btn => {
             if (btn.href && btn.href.includes('login')) {
                 btn.href = 'dashboard.html';
-                btn.textContent = 'Go to dashboard';
+                btn.textContent = label;
             }
+        });
+
+        // دکمه CTA
+        document.querySelectorAll('.cta .btn-solid-lg').forEach(btn => {
+            btn.href = 'dashboard.html';
+            btn.textContent = label;
         });
     }
 }

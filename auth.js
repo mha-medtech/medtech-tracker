@@ -17,36 +17,4 @@ function getUser() {
     return user ? JSON.parse(user) : null;
 }
 
-const logoutLabels = {
-    en: 'Sign out',
-    de: 'Abmelden',
-    fa: 'خروج'
-};
-
 const currentUser = checkAuth();
-
-if (currentUser) {
-    document.addEventListener('DOMContentLoaded', function() {
-        const header = document.querySelector('header');
-        if (header) {
-            const userInfo = document.createElement('div');
-            userInfo.className = 'user-info';
-            userInfo.id = 'userInfoBar';
-
-            const lang = getLang();
-            const logoutText = logoutLabels[lang] || 'Sign out';
-
-            userInfo.innerHTML = `
-                <span class="user-clinic">${currentUser.clinic_name}</span>
-                <button class="logout-btn" id="logoutBtn" onclick="logout()">${logoutText}</button>
-            `;
-
-            const headerActions = header.querySelector('.header-actions');
-            if (headerActions) {
-                headerActions.prepend(userInfo);
-            } else {
-                header.appendChild(userInfo);
-            }
-        }
-    });
-}
