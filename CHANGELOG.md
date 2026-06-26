@@ -4,6 +4,20 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.5.2] — 2026-06-26
+### Added
+- Complete dashboard redesign with sidebar navigation
+- Sidebar with user avatar, clinic name, and logout button
+- Welcome message in header with user name
+- Warranty Management page in dashboard
+- Mobile-friendly sidebar with overlay
+- Nav items for future features (Maintenance, Reports) with "Soon" badge
+
+### Changed
+- Dashboard layout from top-nav to sidebar
+- Header simplified — removed duplicate logout button
+- Landing page hides login buttons after authentication
+
 ## [v1.5.1] — 2026-06-26
 ### Added
 - Warranty management with purchase date and expiry tracking
