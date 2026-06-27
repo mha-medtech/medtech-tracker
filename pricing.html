@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTech Tracker — Pricing</title>
+    <link rel="stylesheet" href="landing.css?v=1.5.2">
+    <style>
+        .pricing-hero {
+            padding: 120px 24px 60px;
+            text-align: center;
+        }
+
+        .pricing-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .pricing-hero p {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 500px;
+            margin: 0 auto 48px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            transition: box-shadow 0.2s;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--blue);
+            border-width: 2px;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--blue);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .plan-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .plan-price {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .plan-price span {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+        .plan-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 28px;
+        }
+
+        .plan-features li {
+            font-size: 13px;
+            color: var(--text);
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-features li:last-child { border-bottom: none; }
+
+        .plan-features li.yes::before { content: '✓'; color: #10b981; font-weight: 700; }
+        .plan-features li.no::before { content: '✗'; color: #cbd5e1; }
+        .plan-features li.no { color: var(--muted); }
+
+        .plan-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .plan-btn.outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+            background: transparent;
+        }
+
+        .plan-btn.outline:hover { border-color: var(--blue); color: var(--blue); }
+
+        .plan-btn.solid {
+            background: var(--blue);
+            color: white;
+        }
+
+        .plan-btn.solid:hover { opacity: 0.9; }
+
+        .pricing-faq {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .pricing-faq h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+        }
+
+        .faq-q {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .faq-a {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-hero h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="logo">MedTech Tracker</a>
+        <nav class="nav">
+            <a href="index.html#features" data-i18n="nav_features">Features</a>
+            <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html" style="color: var(--blue); font-weight:600;">Pricing</a>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="fa">FA</option>
+            </select>
+        </nav>
+        <div class="header-actions" id="headerActions">
+            <a href="login.html" class="btn-outline" data-i18n="nav_login">Sign in</a>
+            <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#features" data-i18n="nav_features">Features</a>
+        <a href="about.html" data-i18n="nav_about_link">About</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="login.html" data-i18n="nav_login">Sign in</a>
+        <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        <div class="mobile-lang">
+            <button onclick="changeLang('en')" class="lang-btn">EN</button>
+            <button onclick="changeLang('de')" class="lang-btn">DE</button>
+            <button onclick="changeLang('fa')" class="lang-btn">FA</button>
+        </div>
+    </div>
+</header>
+
+<section class="pricing-hero">
+    <div class="section-badge" data-i18n="pricing_badge">Pricing</div>
+    <h1 data-i18n="pricing_title">Simple, transparent pricing</h1>
+    <p data-i18n="pricing_sub">Start free. Upgrade when you need more. No hidden fees.</p>
+</section>
+
+<div class="pricing-grid">
+    <div class="pricing-card">
+        <div class="plan-name" data-i18n="plan_free_name">Free</div>
+        <div class="plan-price">$0<span data-i18n="plan_per_month">/month</span></div>
+        <div class="plan-desc" data-i18n="plan_free_desc">Perfect for small clinics getting started</div>
+        <ul class="plan-features">
+            <li class="yes" data-i18n="feat_devices_25">Up to 25 devices</li>
+            <li class="yes" data-i18n="feat_calibration">Calibration alerts</li>
+            <li class="yes" data-i18n="feat_warranty">Warranty tracking</li>
+            <li class="yes" data-i18n="feat_export">CSV export</li>
+            <li class="yes" data-i18n="feat_multilang">3 languages</li>
+            <li class="no" data-i18n="feat_multi_user">Multi-user access</li>
+            <li class="no" data-i18n="feat_reports">Advanced reports</li>
+            <li class="no" data-i18n="feat_repair">Repair history</li>
+        </ul>
+        <a href="login.html" class="plan-btn outline" data-i18n="plan_free_btn">Get started free</a>
+    </div>
+
+    <div class="pricing-card featured">
+        <div class="featured-badge" data-i18n="plan_popular">Most Popular</div>
+        <div class="plan-name" data-i18n="plan_pro_name">Pro</div>
+        <div class="plan-price">$19<span data-i18n="plan_per_month">/month</span></div>
+        <div class="plan-desc" data-i18n="plan_pro_desc">For growing clinics with more needs</div>
+        <ul class="plan-features">
+            <li class="yes" data-i18n="feat_devices_unlimited">Unlimited devices</li>
+            <li class="yes" data-i18n="feat_calibration">Calibration alerts</li>
+            <li class="yes" data-i18n="feat_warranty">Warranty tracking</li>
+            <li class="yes" data-i18n="feat_export">CSV export</li>
+            <li class="yes" data-i18n="feat_multilang">3 languages</li>
+            <li class="yes" data-i18n="feat_multi_user">Multi-user access</li>
+            <li class="yes" data-i18n="feat_reports">Advanced reports</li>
+            <li class="no" data-i18n="feat_repair">Repair history</li>
+        </ul>
+        <a href="login.html" class="plan-btn solid" data-i18n="plan_pro_btn">Start Pro trial</a>
+    </div>
+
+    <div class="pricing-card">
+        <div class="plan-name" data-i18n="plan_enterprise_name">Enterprise</div>
+        <div class="plan-price" data-i18n="plan_enterprise_price">Custom</div>
+        <div class="plan-desc" data-i18n="plan_enterprise_desc">For hospitals and large healthcare networks</div>
+        <ul class="plan-features">
+            <li class="yes" data-i18n="feat_devices_unlimited">Unlimited devices</li>
+            <li class="yes" data-i18n="feat_calibration">Calibration alerts</li>
+            <li class="yes" data-i18n="feat_warranty">Warranty tracking</li>
+            <li class="yes" data-i18n="feat_export">CSV export</li>
+            <li class="yes" data-i18n="feat_multilang">3 languages</li>
+            <li class="yes" data-i18n="feat_multi_user">Multi-user access</li>
+            <li class="yes" data-i18n="feat_reports">Advanced reports</li>
+            <li class="yes" data-i18n="feat_repair">Repair history</li>
+        </ul>
+        <a href="contact.html" class="plan-btn outline" data-i18n="plan_enterprise_btn">Contact us</a>
+    </div>
+</div>
+
+<div class="pricing-faq">
+    <h2 data-i18n="faq_title">Frequently asked questions</h2>
+
+    <div class="faq-item">
+        <div class="faq-q" data-i18n="faq1_q">Is the free plan really free?</div>
+        <div class="faq-a" data-i18n="faq1_a">Yes, completely free with no credit card required. You can manage up to 25 devices at no cost.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" data-i18n="faq2_q">Can I upgrade or downgrade anytime?</div>
+        <div class="faq-a" data-i18n="faq2_a">Yes, you can change your plan at any time. Changes take effect immediately.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" data-i18n="faq3_q">Is my data secure?</div>
+        <div class="faq-a" data-i18n="faq3_a">Yes. Each clinic has its own isolated account and all passwords are securely hashed.</div>
+    </div>
+    <div class="faq-item">
+        <div class="faq-q" data-i18n="faq4_q">Do you offer a trial for Pro?</div>
+        <div class="faq-a" data-i18n="faq4_a">Yes, Pro comes with a 14-day free trial. No credit card needed to start.</div>
+    </div>
+</div>
+
+<section class="cta">
+    <div class="section-inner cta-inner">
+        <h2 data-i18n="cta_title">Ready to get started?</h2>
+        <p data-i18n="cta_sub">Join clinics already using MedTech Tracker.</p>
+        <a href="login.html" class="btn-solid-lg" data-i18n="cta_btn">Create free account</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">MedTech Tracker</div>
+        <div class="footer-links">
+            <a href="index.html" data-i18n="nav_features">Features</a>
+            <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="login.html" data-i18n="nav_login">Sign in</a>
+            <a href="https://github.com/mha-medtech" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-copy">© 2026 Mohammad Hassan Abbasi</div>
+    </div>
+</footer>
+
+<script src="lang.js?v=1.5.2"></script>
+<script src="landing.js?v=1.5.2"></script>
+<script>
+// Pricing translations
+const pricingT = {
+    en: {
+        pricing_badge: "Pricing", pricing_title: "Simple, transparent pricing",
+        pricing_sub: "Start free. Upgrade when you need more. No hidden fees.",
+        plan_free_name: "Free", plan_per_month: "/month", plan_free_desc: "Perfect for small clinics getting started",
+        plan_pro_name: "Pro", plan_pro_desc: "For growing clinics with more needs",
+        plan_enterprise_name: "Enterprise", plan_enterprise_price: "Custom",
+        plan_enterprise_desc: "For hospitals and large healthcare networks",
+        plan_popular: "Most Popular",
+        feat_devices_25: "Up to 25 devices", feat_devices_unlimited: "Unlimited devices",
+        feat_calibration: "Calibration alerts", feat_warranty: "Warranty tracking",
+        feat_export: "CSV export", feat_multilang: "3 languages",
+        feat_multi_user: "Multi-user access", feat_reports: "Advanced reports",
+        feat_repair: "Repair history",
+        plan_free_btn: "Get started free", plan_pro_btn: "Start Pro trial",
+        plan_enterprise_btn: "Contact us",
+        faq_title: "Frequently asked questions",
+        faq1_q: "Is the free plan really free?",
+        faq1_a: "Yes, completely free with no credit card required. You can manage up to 25 devices at no cost.",
+        faq2_q: "Can I upgrade or downgrade anytime?",
+        faq2_a: "Yes, you can change your plan at any time. Changes take effect immediately.",
+        faq3_q: "Is my data secure?",
+        faq3_a: "Yes. Each clinic has its own isolated account and all passwords are securely hashed.",
+        faq4_q: "Do you offer a trial for Pro?",
+        faq4_a: "Yes, Pro comes with a 14-day free trial. No credit card needed to start.",
+        nav_about_link: "About"
+    },
+    de: {
+        pricing_badge: "Preise", pricing_title: "Einfache, transparente Preise",
+        pricing_sub: "Kostenlos starten. Upgraden wenn nötig. Keine versteckten Gebühren.",
+        plan_free_name: "Kostenlos", plan_per_month: "/Monat",
+        plan_free_desc: "Perfekt für kleine Kliniken am Anfang",
+        plan_pro_name: "Pro", plan_pro_desc: "Für wachsende Kliniken mit mehr Bedarf",
+        plan_enterprise_name: "Enterprise", plan_enterprise_price: "Individuell",
+        plan_enterprise_desc: "Für Krankenhäuser und große Gesundheitsnetzwerke",
+        plan_popular: "Am beliebtesten",
+        feat_devices_25: "Bis zu 25 Geräte", feat_devices_unlimited: "Unbegrenzte Geräte",
+        feat_calibration: "Kalibrierungswarnungen", feat_warranty: "Garantieverfolgung",
+        feat_export: "CSV-Export", feat_multilang: "3 Sprachen",
+        feat_multi_user: "Mehrbenutzerzugang", feat_reports: "Erweiterte Berichte",
+        feat_repair: "Reparaturverlauf",
+        plan_free_btn: "Kostenlos starten", plan_pro_btn: "Pro testen",
+        plan_enterprise_btn: "Kontakt",
+        faq_title: "Häufig gestellte Fragen",
+        faq1_q: "Ist der kostenlose Plan wirklich kostenlos?",
+        faq1_a: "Ja, völlig kostenlos ohne Kreditkarte. Sie können bis zu 25 Geräte verwalten.",
+        faq2_q: "Kann ich jederzeit upgraden oder downgraden?",
+        faq2_a: "Ja, Sie können Ihren Plan jederzeit ändern. Änderungen werden sofort wirksam.",
+        faq3_q: "Sind meine Daten sicher?",
+        faq3_a: "Ja. Jede Klinik hat ein eigenes isoliertes Konto und alle Passwörter sind sicher gehasht.",
+        faq4_q: "Gibt es eine Testversion für Pro?",
+        faq4_a: "Ja, Pro wird mit einer 14-tägigen kostenlosen Testversion geliefert.",
+        nav_about_link: "Über uns"
+    },
+    fa: {
+        pricing_badge: "قیمت‌گذاری", pricing_title: "قیمت‌گذاری ساده و شفاف",
+        pricing_sub: "رایگان شروع کنید. هر وقت نیاز داشتید ارتقا دهید. بدون هزینه‌های پنهان.",
+        plan_free_name: "رایگان", plan_per_month: "/ماه",
+        plan_free_desc: "مناسب برای کلینیک‌های کوچک",
+        plan_pro_name: "حرفه‌ای", plan_pro_desc: "برای کلینیک‌های در حال رشد",
+        plan_enterprise_name: "سازمانی", plan_enterprise_price: "سفارشی",
+        plan_enterprise_desc: "برای بیمارستان‌ها و شبکه‌های بزرگ درمانی",
+        plan_popular: "محبوب‌ترین",
+        feat_devices_25: "تا ۲۵ دستگاه", feat_devices_unlimited: "دستگاه نامحدود",
+        feat_calibration: "هشدارهای کالیبراسیون", feat_warranty: "پیگیری گارانتی",
+        feat_export: "خروجی CSV", feat_multilang: "۳ زبان",
+        feat_multi_user: "دسترسی چند کاربره", feat_reports: "گزارش‌های پیشرفته",
+        feat_repair: "تاریخچه تعمیرات",
+        plan_free_btn: "شروع رایگان", plan_pro_btn: "آزمایش حرفه‌ای",
+        plan_enterprise_btn: "تماس با ما",
+        faq_title: "سوالات متداول",
+        faq1_q: "آیا پلن رایگان واقعاً رایگان است؟",
+        faq1_a: "بله، کاملاً رایگان و بدون نیاز به کارت اعتباری. می‌توانید تا ۲۵ دستگاه مدیریت کنید.",
+        faq2_q: "آیا می‌توانم در هر زمان ارتقا یا کاهش پلن دهم؟",
+        faq2_a: "بله، می‌توانید در هر زمان پلن خود را تغییر دهید. تغییرات فوری اعمال می‌شوند.",
+        faq3_q: "آیا داده‌های من امن است؟",
+        faq3_a: "بله. هر کلینیک حساب جداگانه‌ای دارد و تمام رمزها به صورت امن رمزنگاری می‌شوند.",
+        faq4_q: "آیا نسخه آزمایشی برای پلن حرفه‌ای وجود دارد؟",
+        faq4_a: "بله، پلن حرفه‌ای با ۱۴ روز آزمایش رایگان ارائه می‌شود.",
+        nav_about_link: "درباره ما"
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const lang = getLang();
+    const t = { ...landingTranslations[lang], ...pricingT[lang] };
+    const isRtl = lang === 'fa';
+
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    document.querySelector('.lang-select').value = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+});
+</script>
+</body>
+</html>
