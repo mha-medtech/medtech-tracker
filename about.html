@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTech Tracker — About</title>
+    <link rel="stylesheet" href="landing.css?v=1.5.2">
+    <style>
+        .about-hero {
+            padding: 120px 24px 60px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .about-hero p {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .about-hero-visual {
+            background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+        }
+
+        .dev-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .dev-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .dev-title {
+            font-size: 13px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .dev-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dev-tag {
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 11px;
+        }
+
+        .about-story {
+            background: var(--surface);
+            padding: 80px 24px;
+        }
+
+        .about-story-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-story h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+
+        .about-story p {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .timeline {
+            margin-top: 48px;
+        }
+
+        .timeline h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline-item:last-child { border-bottom: none; }
+
+        .timeline-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #e8f0fe;
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .timeline-content p {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 0;
+        }
+
+        .about-values {
+            padding: 80px 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .about-values h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .value-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .value-icon {
+            font-size: 28px;
+            margin-bottom: 14px;
+        }
+
+        .value-card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .value-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .about-links-section {
+            background: var(--surface);
+            padding: 60px 24px;
+        }
+
+        .about-links-inner {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-links-inner h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .about-links-inner p {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                grid-template-columns: 1fr;
+                padding: 100px 24px 40px;
+                gap: 32px;
+            }
+            .about-hero h1 { font-size: 28px; }
+            .values-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="logo">MedTech Tracker</a>
+        <nav class="nav">
+            <a href="index.html#features" data-i18n="nav_features">Features</a>
+            <a href="about.html" style="color: var(--blue); font-weight:600;" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="fa">FA</option>
+            </select>
+        </nav>
+        <div class="header-actions" id="headerActions">
+            <a href="login.html" class="btn-outline" data-i18n="nav_login">Sign in</a>
+            <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#features" data-i18n="nav_features">Features</a>
+        <a href="about.html" data-i18n="nav_about_link">About</a>
+        <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+        <a href="login.html" data-i18n="nav_login">Sign in</a>
+        <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        <div class="mobile-lang">
+            <button onclick="changeLang('en')" class="lang-btn">EN</button>
+            <button onclick="changeLang('de')" class="lang-btn">DE</button>
+            <button onclick="changeLang('fa')" class="lang-btn">FA</button>
+        </div>
+    </div>
+</header>
+
+<!-- HERO -->
+<div class="about-hero">
+    <div>
+        <div class="section-badge" data-i18n="about_badge">About</div>
+        <h1 data-i18n="about_hero_title">Built by a clinician, for clinicians</h1>
+        <p data-i18n="about_hero_text">MedTech Tracker was born from real frustration — watching clinics struggle with spreadsheets and paper logs to track critical medical equipment. We built the tool we always wished existed.</p>
+        <a href="login.html" class="btn-solid-lg" data-i18n="cta_btn">Create free account</a>
+    </div>
+    <div class="about-hero-visual">
+        <div class="dev-avatar">MHA</div>
+        <div class="dev-name">Mohammad Hassan Abbasi</div>
+        <div class="dev-title">Biomedical Engineer · CEO at Kayazh Medical · MSc Applicant (Switzerland)</div>
+        <div class="dev-tags">
+            <span class="dev-tag">8+ years experience</span>
+            <span class="dev-tag">Medical Devices</span>
+            <span class="dev-tag">Regulation</span>
+            <span class="dev-tag">HealthTech</span>
+        </div>
+    </div>
+</div>
+
+<!-- STORY -->
+<div class="about-story">
+    <div class="about-story-inner">
+        <h2 data-i18n="story_title">The story behind MedTech Tracker</h2>
+        <p data-i18n="story_p1">During my years as a medical devices inspector at the Iranian Food and Drug Organization, I visited hundreds of clinics. The same problem appeared everywhere: no one had a reliable system to track when equipment was last calibrated, when warranties were expiring, or which devices needed maintenance.</p>
+        <p data-i18n="story_p2">After founding Kayazh Medical, I saw this problem from the other side — as a distributor working with clinics daily. Most were using Excel sheets, paper notebooks, or nothing at all. Critical deadlines were missed. Equipment failed inspections. Warranties expired unnoticed.</p>
+        <p data-i18n="story_p3">MedTech Tracker is my answer to this problem. A simple, multilingual, mobile-friendly platform that any clinic can use — no technical expertise required.</p>
+
+        <div class="timeline">
+            <h3 data-i18n="timeline_title">Experience timeline</h3>
+            <div class="timeline-item">
+                <div class="timeline-dot">🎓</div>
+                <div class="timeline-content">
+                    <h4 data-i18n="tl1_title">BSc Biomedical Engineering — 2017</h4>
+                    <p data-i18n="tl1_text">Islamic Azad University, Kerman. Specialization in Biomechanics.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">🏛️</div>
+                <div class="timeline-content">
+                    <h4 data-i18n="tl2_title">Medical Devices Inspector — 2017–2021</h4>
+                    <p data-i18n="tl2_text">Iranian Food and Drug Organization. Inspected medical devices across clinics and hospitals.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">📊</div>
+                <div class="timeline-content">
+                    <h4 data-i18n="tl3_title">MBA Financial Management — 2019</h4>
+                    <p data-i18n="tl3_text">University of Tehran. Final grade: 18.25/20.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">🏢</div>
+                <div class="timeline-content">
+                    <h4 data-i18n="tl4_title">CEO at Kayazh Medical — 2020–Present</h4>
+                    <p data-i18n="tl4_text">Founded and manage a medical supplies distribution company serving clinics and hospitals.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">💻</div>
+                <div class="timeline-content">
+                    <h4 data-i18n="tl5_title">MedTech Tracker — 2026</h4>
+                    <p data-i18n="tl5_text">Built this platform from scratch as a full-stack web application for medical equipment management.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VALUES -->
+<div class="about-values">
+    <h2 data-i18n="values_title">What we stand for</h2>
+    <div class="values-grid">
+        <div class="value-card">
+            <div class="value-icon">🎯</div>
+            <h3 data-i18n="val1_title">Simplicity first</h3>
+            <p data-i18n="val1_text">Medical staff are busy. Our interface is designed to be intuitive — no training needed.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">🌍</div>
+            <h3 data-i18n="val2_title">Built for the region</h3>
+            <p data-i18n="val2_text">Full Persian (Farsi) and German support with RTL layout. Designed for clinics in Iran and beyond.</p>
+        </div>
+        <div class="value-card">
+            <div class="value-icon">🔬</div>
+            <h3 data-i18n="val3_title">Clinical expertise</h3>
+            <p data-i18n="val3_text">Every feature is informed by real experience in medical device regulation and clinical operations.</p>
+        </div>
+    </div>
+</div>
+
+<!-- CONNECT -->
+<div class="about-links-section">
+    <div class="about-links-inner">
+        <h2 data-i18n="connect_title">Get in touch</h2>
+        <p data-i18n="connect_sub">Interested in MedTech Tracker for your clinic, or want to collaborate?</p>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank" class="social-link">💼 LinkedIn</a>
+            <a href="https://github.com/mha-medtech" target="_blank" class="social-link">🐙 GitHub</a>
+            <a href="https://www.kayazh.com" target="_blank" class="social-link">🌐 kayazh.com</a>
+            <a href="mailto:mh.abbasi@kayazh.com" class="social-link">✉️ Email</a>
+        </div>
+    </div>
+</div>
+
+<section class="cta">
+    <div class="section-inner cta-inner">
+        <h2 data-i18n="cta_title">Ready to get started?</h2>
+        <p data-i18n="cta_sub">Join clinics already using MedTech Tracker.</p>
+        <a href="login.html" class="btn-solid-lg" data-i18n="cta_btn">Create free account</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">MedTech Tracker</div>
+        <div class="footer-links">
+            <a href="index.html" data-i18n="nav_features">Features</a>
+            <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+            <a href="login.html" data-i18n="nav_login">Sign in</a>
+            <a href="https://github.com/mha-medtech" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-copy">© 2026 Mohammad Hassan Abbasi</div>
+    </div>
+</footer>
+
+<script src="lang.js?v=1.5.2"></script>
+<script src="landing.js?v=1.5.2"></script>
+<script>
+const aboutT = {
+    en: {
+        about_badge: "About", about_hero_title: "Built by a Biomedical Engineer, for medical professionals",
+        about_hero_text: "MedTech Tracker was born from real frustration — watching clinics struggle with spreadsheets and paper logs to track critical medical equipment.",
+        story_title: "The story behind MedTech Tracker",
+        story_p1: "During my years as a medical devices inspector at the Iranian Food and Drug Organization, I visited hundreds of clinics. The same problem appeared everywhere: no intelligent system existed for registering and monitoring medical equipment — especially capital medical devices.",
+        story_p2: "After founding Kayazh Medical, I saw this problem from the other side — as a distributor working with clinics daily. Most were using Excel sheets or paper notebooks.",
+        story_p3: "MedTech Tracker is my answer. A simple, multilingual, mobile-friendly platform that any clinic can use.",
+        timeline_title: "Experience timeline",
+        tl1_title: "BSc Biomedical Engineering — 2017", tl1_text: "Islamic Azad University, Kerman. Specialization in Biomechanics.",
+        tl2_title: "Medical Devices Inspector — 2017–2021", tl2_text: "Iranian Food and Drug Organization.",
+        tl3_title: "MBA Financial Management — 2019", tl3_text: "University of Tehran.",
+       tl4_title: "CEO at Kayazh Biomedical Engineering Co. — 2020–Present", tl4_text: "Founded and manage Kayazh Biomedical Engineering Co., a medical supplies distribution company serving clinics and hospitals.",
+        tl5_title: "MedTech Tracker — 2026", tl5_text: "Built this platform from scratch as a full-stack web application.",
+        values_title: "What we stand for",
+        val1_title: "Simplicity first", val1_text: "Medical staff are busy. Our interface is designed to be intuitive.",
+        val2_title: "Built for the region", val2_text: "Full Persian and German support with RTL layout.",
+        val3_title: "Clinical expertise", val3_text: "Every feature is informed by real experience in medical device regulation.",
+        connect_title: "Get in touch", connect_sub: "Interested in MedTech Tracker for your clinic, or want to collaborate?",
+        nav_about_link: "About", nav_pricing: "Pricing"
+    },
+    de: {
+        about_badge: "Über uns", about_hero_title: "Von einem Biomediziningenieur für medizinische Fachkräfte gebaut",
+        about_hero_text: "MedTech Tracker entstand aus echter Frustration — Kliniken beim Kampf mit Tabellenkalkulationen zur Geräteverfolgung zu beobachten.",
+        story_title: "Die Geschichte hinter MedTech Tracker",
+        story_p1: "In meinen Jahren als Medizingeräteinspektor besuchte ich Hunderte von Kliniken. Überall dasselbe Problem: kein intelligentes System zur Erfassung und Überwachung medizinischer Geräte — insbesondere von Investitionsgütern.",
+        story_p2: "Nach der Gründung von Kayazh Medical sah ich dieses Problem von der anderen Seite — als Händler, der täglich mit Kliniken arbeitet.",
+        story_p3: "MedTech Tracker ist meine Antwort. Eine einfache, mehrsprachige Plattform für jede Klinik.",
+        timeline_title: "Erfahrungszeitplan",
+        tl1_title: "BSc Biomedizintechnik — 2017", tl1_text: "Islamische Azad-Universität, Kerman.",
+        tl2_title: "Medizingeräteinspektor — 2017–2021", tl2_text: "Iranische Lebensmittel- und Arzneimittelbehörde.",
+        tl3_title: "MBA Finanzmanagement — 2019", tl3_text: "Universität Teheran.",
+        tl4_title: "CEO bei Kayazh Biomedizintechnik GmbH — 2020–heute", tl4_text: "Gegründet und Verwaltung der Kayazh Biomedizintechnik, ein Unternehmen für medizinische Geräte.",
+        tl5_title: "MedTech Tracker — 2026", tl5_text: "Diese Plattform von Grund auf entwickelt.",
+        values_title: "Wofür wir stehen",
+        val1_title: "Einfachheit zuerst", val1_text: "Medizinisches Personal ist beschäftigt. Unsere Oberfläche ist intuitiv.",
+        val2_title: "Für die Region gebaut", val2_text: "Vollständige Persisch- und Deutschunterstützung mit RTL-Layout.",
+        val3_title: "Klinische Expertise", val3_text: "Jede Funktion basiert auf echter Erfahrung.",
+        connect_title: "Kontakt aufnehmen", connect_sub: "Interesse an MedTech Tracker für Ihre Klinik?",
+        nav_about_link: "Über uns", nav_pricing: "Preise"
+    },
+    fa: {
+        about_badge: "درباره", about_hero_title: "ساخته شده توسط مهندس پزشک، برای متخصصان پزشکی",
+        about_hero_text: "مدتک ترکر از ناامیدی واقعی به وجود آمد — دیدن کلینیک‌هایی که با صفحات اکسل تجهیزات پزشکی را دنبال می‌کنند.",
+        story_title: "داستان پشت مدتک ترکر",
+        story_p1: "در سال‌های کاری به عنوان بازرس تجهیزات پزشکی در سازمان غذا و دارو، صدها کلینیک را بازدید کردم. همه جا یک مشکل بود: هیچ سیستم هوشمندی برای ثبت و بررسی تجهیزات پزشکی به خصوص تجهیزات سرمایه‌ای وجود نداشت.",
+        story_p2: "پس از تأسیس شرکت کایاژ، این مشکل را از طرف دیگر دیدم — به عنوان توزیع‌کننده‌ای که روزانه با کلینیک‌ها کار می‌کند.",
+        story_p3: "مدتک ترکر پاسخ من به این مشکل است. یک پلتفرم ساده، چند زبانه و موبایل‌پسند.",
+        timeline_title: "تاریخچه تجربه",
+        tl1_title: "کارشناسی مهندسی پزشکی — ۱۳۹۶", tl1_text: "دانشگاه آزاد اسلامی، کرمان. گرایش بیومکانیک.",
+        tl2_title: "بازرس تجهیزات پزشکی — ۱۳۹۶–۱۴۰۰", tl2_text: "سازمان غذا و داروی ایران.",
+        tl3_title: "MBA مدیریت مالی — ۱۳۹۸",tl3_text: "دانشگاه تهران.",
+        tl4_title: "مدیرعامل شرکت کایاژ — ۱۳۹۹ تاکنون", tl4_text: "تأسیس و مدیریت شرکت مهندسی پزشکی کایاژ در حوزه توزیع ملزومات و تجهیزات پزشکی.",
+        tl5_title: "مدتک ترکر — ۱۴۰۵", tl5_text: "ساخت این پلتفرم از صفر به عنوان یک وب اپلیکیشن کامل.",
+        values_title: "ارزش‌های ما",
+        val1_title: "سادگی در اولویت", val1_text: "کارکنان پزشکی مشغول هستند. رابط ما بصری و ساده است.",
+        val2_title: "ساخته شده برای منطقه", val2_text: "پشتیبانی کامل از فارسی و آلمانی با چیدمان RTL.",
+        val3_title: "تخصص بالینی", val3_text: "هر ویژگی بر اساس تجربه واقعی در تنظیم تجهیزات پزشکی است.",
+        connect_title: "تماس بگیرید", connect_sub: "علاقه‌مند به مدتک ترکر برای کلینیک خود هستید؟",
+        nav_about_link: "درباره ما", nav_pricing: "قیمت‌گذاری"
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    const lang = getLang();
+    const t = { ...landingTranslations[lang], ...aboutT[lang] };
+    const isRtl = lang === 'fa';
+
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelector('.lang-select').value = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+});
+
+// وقتی زبان عوض میشه
+function changeLang(lang) {
+    setLang(lang);
+    const t = { ...landingTranslations[lang], ...aboutT[lang] };
+    const isRtl = lang === 'fa';
+
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelector('.lang-select').value = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+}
+</script>
+</body>
+</html>

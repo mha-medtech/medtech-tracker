@@ -921,3 +921,55 @@ footer a {
 @media (max-width: 480px) {
     .welcome-msg { display: none; }
 }
+.repair-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.repair-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.repair-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.repair-date {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.repair-type {
+    font-size: 12px;
+    background: #e8f0fe;
+    color: var(--blue);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.repair-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.repair-field {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.repair-field strong {
+    color: var(--text-muted);
+    font-weight: 500;
+}

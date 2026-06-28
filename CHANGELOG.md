@@ -4,6 +4,15 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.6.0] — 2026-06-27
+### Added
+- Repair history tracking for each device
+- Repair records: date, problem type, description, action taken, technician, cost, invoice
+- Repair status tracking (Resolved / Needs Follow-up / Referred to Vendor)
+- Maintenance page in dashboard sidebar
+- About and Pricing pages for landing
+- Multilingual support for all new features
+
 ## [v1.5.2] — 2026-06-26
 ### Added
 - Complete dashboard redesign with sidebar navigation

@@ -41,11 +41,10 @@
                 <span class="nav-icon">🛡️</span>
                 <span data-i18n="nav_warranty">Warranty</span>
             </button>
-            <button class="nav-item disabled">
-                <span class="nav-icon">🛠️</span>
-                <span data-i18n="nav_maintenance">Maintenance</span>
-                <span class="nav-badge">Soon</span>
-            </button>
+            <button class="nav-item" onclick="showPage('maintenance')">
+    <span class="nav-icon">🛠️</span>
+    <span data-i18n="nav_maintenance">Maintenance</span>
+</button>
             <button class="nav-item disabled">
                 <span class="nav-icon">📈</span>
                 <span data-i18n="nav_reports">Reports</span>
@@ -197,6 +196,25 @@
                 </div>
             </div>
 
+            <!-- MAINTENANCE PAGE -->
+<div id="page-maintenance" style="display:none;">
+    <div class="equipment-list">
+        <div class="list-header">
+            <h2 data-i18n="maintenance_title">Repair History</h2>
+            <div class="list-controls">
+                <select id="repairEquipmentFilter" onchange="loadRepairs()">
+                    <option value="" data-i18n="repair_select_device">Select device...</option>
+                </select>
+                <button class="add-btn" onclick="toggleRepairModal()" data-i18n="btn_add_repair">+ Add Repair</button>
+            </div>
+        </div>
+
+        <div id="repairsList">
+            <div class="no-results" data-i18n="repair_select_prompt">Select a device to view its repair history.</div>
+        </div>
+    </div>
+</div>
+            
             <!-- ABOUT PAGE -->
             <div id="page-about" style="display:none;">
                 <div class="about-card">
@@ -299,5 +317,72 @@
 <script src="lang.js?v=1.5.2"></script>
 <script src="auth.js?v=1.5.2"></script>
 <script src="app.js?v=1.5.2"></script>
+    
+    <!-- REPAIR MODAL -->
+<div class="modal-overlay" id="repairModalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 data-i18n="repair_modal_title">Add Repair Record</h3>
+            <button class="close-btn" onclick="toggleRepairModal()">✕</button>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label data-i18n="repair_device">Device</label>
+                <select id="repairDevice"></select>
+            </div>
+            <div class="form-group">
+                <label data-i18n="repair_date">Repair Date</label>
+                <input type="date" id="repairDate" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label data-i18n="repair_problem_type">Problem Type</label>
+                <select id="repairProblemType">
+                    <option value="Electrical" data-i18n="prob_electrical">Electrical</option>
+                    <option value="Mechanical" data-i18n="prob_mechanical">Mechanical</option>
+                    <option value="Software" data-i18n="prob_software">Software</option>
+                    <option value="Calibration" data-i18n="prob_calibration">Calibration</option>
+                    <option value="Periodic Service" data-i18n="prob_periodic">Periodic Service</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label data-i18n="repair_status_after">Status After</label>
+                <select id="repairStatusAfter">
+                    <option value="Resolved" data-i18n="repair_resolved">Resolved</option>
+                    <option value="Needs Follow-up" data-i18n="repair_followup">Needs Follow-up</option>
+                    <option value="Referred to Vendor" data-i18n="repair_vendor">Referred to Vendor</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label data-i18n="repair_technician">Technician / Company</label>
+                <input type="text" id="repairTechnician" placeholder="e.g. Siemens Service" />
+            </div>
+            <div class="form-group">
+                <label data-i18n="repair_cost">Cost</label>
+                <input type="number" id="repairCost" placeholder="0" min="0" />
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+            <label data-i18n="repair_problem_desc">Problem Description</label>
+            <textarea id="repairProblemDesc" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);resize:vertical;outline:none;" placeholder="Describe the problem..."></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+            <label data-i18n="repair_action">Action Taken</label>
+            <textarea id="repairActionTaken" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);resize:vertical;outline:none;" placeholder="Describe the action taken..."></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+            <label data-i18n="repair_invoice">Invoice Number</label>
+            <input type="text" id="repairInvoice" placeholder="e.g. INV-2026-001" />
+        </div>
+        <div class="form-actions">
+            <button class="cancel-btn" onclick="toggleRepairModal()" data-i18n="btn_cancel">Cancel</button>
+            <button class="save-btn" onclick="addRepair()" data-i18n="btn_save_repair">Save Record</button>
+        </div>
+    </div>
+</div>
+    
 </body>
 </html>

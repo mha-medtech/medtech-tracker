@@ -101,6 +101,30 @@ alert_warranty_expiring: "days until warranty expires",
 nav_maintenance: "Maintenance",
 nav_reports: "Reports",
 warranty_page_title: "Warranty Management",
+        maintenance_title: "Repair History",
+repair_select_device: "Select device...",
+repair_select_prompt: "Select a device to view its repair history.",
+btn_add_repair: "+ Add Repair",
+repair_modal_title: "Add Repair Record",
+repair_device: "Device",
+repair_date: "Repair Date",
+repair_problem_type: "Problem Type",
+repair_status_after: "Status After",
+repair_technician: "Technician / Company",
+repair_cost: "Cost",
+repair_problem_desc: "Problem Description",
+repair_action: "Action Taken",
+repair_invoice: "Invoice Number",
+btn_save_repair: "Save Record",
+prob_electrical: "Electrical",
+prob_mechanical: "Mechanical",
+prob_software: "Software",
+prob_calibration: "Calibration",
+prob_periodic: "Periodic Service",
+repair_resolved: "Resolved",
+repair_followup: "Needs Follow-up",
+repair_vendor: "Referred to Vendor",
+repair_no_records: "No repair records found.",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -149,6 +173,30 @@ alert_warranty_expiring: "Tage bis Garantieablauf",
 nav_maintenance: "Wartung",
 nav_reports: "Berichte",
 warranty_page_title: "Garantieverwaltung",
+        maintenance_title: "Reparaturverlauf",
+repair_select_device: "Gerät auswählen...",
+repair_select_prompt: "Wählen Sie ein Gerät aus, um den Reparaturverlauf anzuzeigen.",
+btn_add_repair: "+ Reparatur hinzufügen",
+repair_modal_title: "Reparaturdatensatz hinzufügen",
+repair_device: "Gerät",
+repair_date: "Reparaturdatum",
+repair_problem_type: "Problemtyp",
+repair_status_after: "Status danach",
+repair_technician: "Techniker / Unternehmen",
+repair_cost: "Kosten",
+repair_problem_desc: "Problembeschreibung",
+repair_action: "Durchgeführte Maßnahme",
+repair_invoice: "Rechnungsnummer",
+btn_save_repair: "Datensatz speichern",
+prob_electrical: "Elektrisch",
+prob_mechanical: "Mechanisch",
+prob_software: "Software",
+prob_calibration: "Kalibrierung",
+prob_periodic: "Periodischer Service",
+repair_resolved: "Gelöst",
+repair_followup: "Nachverfolgung erforderlich",
+repair_vendor: "An Händler weitergeleitet",
+repair_no_records: "Keine Reparaturdaten gefunden.",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
@@ -197,6 +245,30 @@ alert_warranty_expiring: "روز تا انقضای گارانتی",
 nav_maintenance: "تعمیرات",
 nav_reports: "گزارش‌ها",
 warranty_page_title: "مدیریت گارانتی",
+        maintenance_title: "تاریخچه تعمیرات",
+repair_select_device: "دستگاه را انتخاب کنید...",
+repair_select_prompt: "یک دستگاه انتخاب کنید تا تاریخچه تعمیرات آن نمایش داده شود.",
+btn_add_repair: "+ افزودن تعمیر",
+repair_modal_title: "افزودن سابقه تعمیر",
+repair_device: "دستگاه",
+repair_date: "تاریخ تعمیر",
+repair_problem_type: "نوع مشکل",
+repair_status_after: "وضعیت بعد از تعمیر",
+repair_technician: "تکنسین / شرکت",
+repair_cost: "هزینه",
+repair_problem_desc: "توضیحات مشکل",
+repair_action: "اقدام انجام شده",
+repair_invoice: "شماره فاکتور",
+btn_save_repair: "ذخیره سابقه",
+prob_electrical: "برقی",
+prob_mechanical: "مکانیکی",
+prob_software: "نرم‌افزاری",
+prob_calibration: "کالیبراسیون",
+prob_periodic: "سرویس دوره‌ای",
+repair_resolved: "حل شد",
+repair_followup: "نیاز به پیگیری",
+repair_vendor: "ارجاع به نمایندگی",
+repair_no_records: "سابقه تعمیری یافت نشد.",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -714,13 +786,13 @@ function exportCSV() {
     URL.revokeObjectURL(url);
 }
 const pageTitles = {
-    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', about: 'About' },
-    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', about: 'Über' },
-    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', about: 'درباره' }
+    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', maintenance: 'Repair History', about: 'About' },
+    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', maintenance: 'Reparaturverlauf', about: 'Über' },
+    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', maintenance: 'تاریخچه تعمیرات', about: 'درباره' }
 };
 
 function showPage(page) {
-    const pages = ['dashboard', 'equipment', 'warranty', 'about'];
+const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'about'];
     pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
         if (el) el.style.display = p === page ? 'block' : 'none';
@@ -737,6 +809,7 @@ function showPage(page) {
     if (titleEl) titleEl.textContent = titles[page] || page;
 
     if (page === 'warranty') updateWarrantyPage();
+    if (page === 'maintenance') populateRepairDevices();
     if (window.innerWidth <= 768) closeSidebar();
 }
 
@@ -845,4 +918,162 @@ function updateWarrantyPage() {
         `;
         tbody.appendChild(tr);
     });
+}
+
+// REPAIRS
+
+function toggleRepairModal() {
+    const overlay = document.getElementById('repairModalOverlay');
+    overlay.classList.toggle('active');
+    if (overlay.classList.contains('active')) {
+        populateRepairDevices();
+    }
+}
+
+function populateRepairDevices() {
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const select = document.getElementById('repairDevice');
+    const filterSelect = document.getElementById('repairEquipmentFilter');
+    if (!select) return;
+
+    select.innerHTML = '';
+    if (filterSelect) filterSelect.innerHTML = `<option value="">${translations[currentLang].repair_select_device}</option>`;
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const id = row.getAttribute('data-id');
+        if (!id) return;
+
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = name;
+        select.appendChild(opt);
+
+        if (filterSelect) {
+            const opt2 = opt.cloneNode(true);
+            filterSelect.appendChild(opt2);
+        }
+    });
+}
+
+async function loadRepairs() {
+    const user = getUser();
+    if (!user) return;
+
+    const equipmentId = document.getElementById('repairEquipmentFilter').value;
+    const container = document.getElementById('repairsList');
+    const t = translations[currentLang];
+
+    if (!equipmentId) {
+        container.innerHTML = `<div class="no-results">${t.repair_select_prompt}</div>`;
+        return;
+    }
+
+    container.innerHTML = `<div class="no-results">Loading...</div>`;
+
+    try {
+        const res = await fetch(`${API}/repairs/get.php?equipment_id=${equipmentId}&user_id=${user.id}`);
+        const data = await res.json();
+
+        if (!data.success || data.data.length === 0) {
+            container.innerHTML = `<div class="no-results">${t.repair_no_records}</div>`;
+            return;
+        }
+
+        container.innerHTML = '';
+        data.data.forEach(repair => {
+            const card = document.createElement('div');
+            card.className = 'repair-card';
+            card.setAttribute('data-repair-id', repair.id);
+            card.innerHTML = `
+                <div class="repair-card-header">
+                    <div class="repair-meta">
+                        <span class="repair-date">📅 ${repair.repair_date}</span>
+                        <span class="repair-type">${repair.problem_type}</span>
+                        <span class="status ${repair.status_after === 'Resolved' ? 'good' : repair.status_after === 'Needs Follow-up' ? 'warning' : 'danger'}">${repair.status_after}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteRepair(${repair.id})">🗑</button>
+                </div>
+                <div class="repair-card-body">
+                    <div class="repair-field"><strong>${t.repair_problem_desc}:</strong> ${repair.problem_desc}</div>
+                    <div class="repair-field"><strong>${t.repair_action}:</strong> ${repair.action_taken}</div>
+                    ${repair.technician ? `<div class="repair-field"><strong>${t.repair_technician}:</strong> ${repair.technician}</div>` : ''}
+                    ${repair.cost > 0 ? `<div class="repair-field"><strong>${t.repair_cost}:</strong> ${repair.cost}</div>` : ''}
+                    ${repair.invoice_number ? `<div class="repair-field"><strong>${t.repair_invoice}:</strong> ${repair.invoice_number}</div>` : ''}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+    } catch (err) {
+        container.innerHTML = `<div class="no-results">Connection error.</div>`;
+    }
+}
+
+async function addRepair() {
+    const user = getUser();
+    if (!user) return;
+
+    const equipment_id = document.getElementById('repairDevice').value;
+    const repair_date = document.getElementById('repairDate').value;
+    const problem_type = document.getElementById('repairProblemType').value;
+    const problem_desc = document.getElementById('repairProblemDesc').value.trim();
+    const action_taken = document.getElementById('repairActionTaken').value.trim();
+    const technician = document.getElementById('repairTechnician').value.trim();
+    const cost = document.getElementById('repairCost').value || 0;
+    const status_after = document.getElementById('repairStatusAfter').value;
+    const invoice_number = document.getElementById('repairInvoice').value.trim();
+
+    if (!equipment_id || !repair_date || !problem_desc || !action_taken) {
+        alert('Please fill in required fields.');
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/repairs/add.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                equipment_id, user_id: user.id,
+                repair_date, problem_type, problem_desc,
+                action_taken, technician, cost,
+                status_after, invoice_number
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            toggleRepairModal();
+            document.getElementById('repairEquipmentFilter').value = equipment_id;
+            loadRepairs();
+        } else {
+            alert(data.message);
+        }
+
+    } catch (err) {
+        alert('Connection error.');
+    }
+}
+
+async function deleteRepair(id) {
+    const user = getUser();
+    if (!user) return;
+
+    if (!confirm('Delete this repair record?')) return;
+
+    try {
+        const res = await fetch(`${API}/repairs/delete.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, user_id: user.id })
+        });
+
+        const data = await res.json();
+        if (data.success) loadRepairs();
+        else alert(data.message);
+
+    } catch (err) {
+        alert('Connection error.');
+    }
 }
