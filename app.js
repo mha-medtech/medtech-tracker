@@ -141,6 +141,11 @@ settings_new_pass: "New Password",
 settings_save_pass: "Update Password",
 settings_danger: "Danger Zone",
 settings_logout_all: "Sign out from all devices",
+        quick_actions: "Quick Actions",
+qa_add_equipment: "Add Equipment",
+qa_add_repair: "Log Repair",
+qa_view_equipment: "View Equipment",
+qa_view_warranty: "Warranty Status",
 settings_signout: "Sign out",
 alert_days_left: "days until calibration"
     },
@@ -230,6 +235,11 @@ settings_new_pass: "Neues Passwort",
 settings_save_pass: "Passwort aktualisieren",
 settings_danger: "Gefahrenzone",
 settings_logout_all: "Von allen Geräten abmelden",
+        quick_actions: "Schnellaktionen",
+qa_add_equipment: "Gerät hinzufügen",
+qa_add_repair: "Reparatur erfassen",
+qa_view_equipment: "Geräte anzeigen",
+qa_view_warranty: "Garantiestatus",
 settings_signout: "Abmelden",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
@@ -320,6 +330,11 @@ settings_save_pass: "بروزرسانی رمز عبور",
 settings_danger: "منطقه خطر",
 settings_logout_all: "خروج از همه دستگاه‌ها",
 settings_signout: "خروج",
+        quick_actions: "دسترسی سریع",
+qa_add_equipment: "افزودن تجهیز",
+qa_add_repair: "ثبت تعمیر",
+qa_view_equipment: "مشاهده تجهیزات",
+qa_view_warranty: "وضعیت گارانتی",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -1301,4 +1316,34 @@ async function savePassword() {
         msg.textContent = 'Connection error.';
         msg.className = 'settings-msg error';
     }
+}
+function showPageDirect(page) {
+    const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'settings', 'about'];
+    pages.forEach(p => {
+        const el = document.getElementById(`page-${p}`);
+        if (el) {
+            if (p === page) {
+                el.style.display = 'block';
+                el.style.flex = 'none';
+            } else {
+                el.style.display = 'none';
+                el.style.flex = 'none';
+            }
+        }
+    });
+
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(item => {
+        if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(`'${page}'`)) {
+            item.classList.add('active');
+        }
+    });
+
+    const titles = pageTitles[currentLang] || pageTitles['en'];
+    const titleEl = document.getElementById('pageTitle');
+    if (titleEl) titleEl.textContent = titles[page] || page;
+
+    if (page === 'warranty') updateWarrantyPage();
+    if (page === 'maintenance') populateRepairDevices();
+    if (page === 'settings') loadSettings();
 }

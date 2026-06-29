@@ -1135,3 +1135,55 @@ footer a {
     display: none !important;
     flex: none !important;
 }
+
+.quick-actions {
+    margin-bottom: 24px;
+}
+
+.quick-actions h2 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+}
+
+.qa-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.qa-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.qa-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    box-shadow: 0 4px 12px rgba(26,115,232,0.1);
+    transform: translateY(-2px);
+}
+
+.qa-icon {
+    font-size: 24px;
+}
+
+@media (max-width: 768px) {
+    .qa-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
