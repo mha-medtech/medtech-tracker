@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTech Tracker — Contact</title>
+    <link rel="stylesheet" href="landing.css?v=1.6.3">
+    <style>
+        .contact-hero {
+            padding: 120px 24px 60px;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .contact-hero p {
+            font-size: 16px;
+            color: var(--muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        .contact-form-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .contact-form-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+
+        .contact-field {
+            margin-bottom: 16px;
+        }
+
+        .contact-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .contact-field input,
+        .contact-field select,
+        .contact-field textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--text);
+            background: white;
+            outline: none;
+            transition: border 0.2s;
+            font-family: inherit;
+        }
+
+        .contact-field input:focus,
+        .contact-field select:focus,
+        .contact-field textarea:focus {
+            border-color: var(--blue);
+        }
+
+        .contact-field textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 8px;
+        }
+
+        .contact-submit:hover { opacity: 0.9; }
+
+        .contact-success {
+            display: none;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .contact-success-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .contact-success h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .contact-success p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .contact-info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #e8f0fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-info-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .contact-info-content p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .contact-info-content a {
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .contact-info-content a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .contact-hero h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="logo">MedTech Tracker</a>
+        <nav class="nav">
+            <a href="index.html#features" data-i18n="nav_features">Features</a>
+            <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+            <a href="contact.html" style="color: var(--blue); font-weight:600;" data-i18n="nav_contact">Contact</a>
+            <select class="lang-select" onchange="changeLang(this.value)">
+                <option value="en">EN</option>
+                <option value="de">DE</option>
+                <option value="fa">FA</option>
+            </select>
+        </nav>
+        <div class="header-actions" id="headerActions">
+            <a href="login.html" class="btn-outline" data-i18n="nav_login">Sign in</a>
+            <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#features" data-i18n="nav_features">Features</a>
+        <a href="about.html" data-i18n="nav_about_link">About</a>
+        <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+        <a href="contact.html" data-i18n="nav_contact">Contact</a>
+        <a href="login.html" data-i18n="nav_login">Sign in</a>
+        <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
+        <div class="mobile-lang">
+            <select class="lang-select-mobile" onchange="changeLang(this.value)">
+                <option value="en">🌐 English</option>
+                <option value="de">🌐 Deutsch</option>
+                <option value="fa">🌐 فارسی</option>
+            </select>
+        </div>
+    </div>
+</header>
+
+<div class="contact-hero">
+    <div class="section-badge" data-i18n="contact_badge">Contact</div>
+    <h1 data-i18n="contact_title">Get in touch</h1>
+    <p data-i18n="contact_sub">Have a question or want to use MedTech Tracker in your clinic? We'd love to hear from you.</p>
+</div>
+
+<div class="contact-grid">
+    <div class="contact-form-card">
+        <div id="contactFormWrap">
+            <h2 data-i18n="contact_form_title">Send us a message</h2>
+            <div class="contact-field">
+                <label data-i18n="contact_name">Full Name</label>
+                <input type="text" id="contactName" placeholder="Mohammad Hassan Abbasi" />
+            </div>
+            <div class="contact-field">
+                <label data-i18n="contact_email">Email Address</label>
+                <input type="email" id="contactEmail" placeholder="clinic@example.com" />
+            </div>
+            <div class="contact-field">
+                <label data-i18n="contact_subject">Subject</label>
+                <select id="contactSubject">
+                    <option value="demo" data-i18n="contact_subject_demo">Request a demo</option>
+                    <option value="pricing" data-i18n="contact_subject_pricing">Pricing inquiry</option>
+                    <option value="support" data-i18n="contact_subject_support">Technical support</option>
+                    <option value="partnership" data-i18n="contact_subject_partnership">Partnership</option>
+                    <option value="other" data-i18n="contact_subject_other">Other</option>
+                </select>
+            </div>
+            <div class="contact-field">
+                <label data-i18n="contact_message">Message</label>
+                <textarea id="contactMessage" placeholder="Tell us about your clinic and how we can help..."></textarea>
+            </div>
+            <button class="contact-submit" onclick="submitContact()" data-i18n="contact_send">Send Message</button>
+        </div>
+        <div class="contact-success" id="contactSuccess">
+            <div class="contact-success-icon">✅</div>
+            <h3 data-i18n="contact_success_title">Message sent!</h3>
+            <p data-i18n="contact_success_text">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+        </div>
+    </div>
+
+    <div class="contact-info">
+        <div class="contact-info-card">
+            <div class="contact-info-icon">✉️</div>
+            <div class="contact-info-content">
+                <h3 data-i18n="contact_email_title">Email</h3>
+                <a href="mailto:mh.abbasi@kayazh.com">mh.abbasi@kayazh.com</a>
+            </div>
+        </div>
+        <div class="contact-info-card">
+            <div class="contact-info-icon">🌐</div>
+            <div class="contact-info-content">
+                <h3 data-i18n="contact_website_title">Website</h3>
+                <a href="https://www.kayazh.com" target="_blank">www.kayazh.com</a>
+            </div>
+        </div>
+        <div class="contact-info-card">
+            <div class="contact-info-icon">💼</div>
+            <div class="contact-info-content">
+                <h3>LinkedIn</h3>
+                <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">linkedin.com/in/mhabbasii</a>
+            </div>
+        </div>
+        <div class="contact-info-card">
+            <div class="contact-info-icon">🏥</div>
+            <div class="contact-info-content">
+                <h3 data-i18n="contact_clinic_title">Clinic</h3>
+                <p data-i18n="contact_clinic_text">Kayazh Biomedical Engineering Co., Kerman, Iran</p>
+            </div>
+        </div>
+        <div class="contact-info-card">
+            <div class="contact-info-icon">🕐</div>
+            <div class="contact-info-content">
+                <h3 data-i18n="contact_hours_title">Response Time</h3>
+                <p data-i18n="contact_hours_text">We typically respond within 24 hours on business days.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="cta">
+    <div class="section-inner cta-inner">
+        <h2 data-i18n="cta_title">Ready to get started?</h2>
+        <p data-i18n="cta_sub">Join clinics already using MedTech Tracker.</p>
+        <a href="login.html" class="btn-solid-lg" data-i18n="cta_btn">Create free account</a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <div class="footer-logo">MedTech Tracker</div>
+        <div class="footer-links">
+            <a href="index.html" data-i18n="nav_features">Features</a>
+            <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
+            <a href="contact.html" data-i18n="nav_contact">Contact</a>
+            <a href="login.html" data-i18n="nav_login">Sign in</a>
+            <a href="https://github.com/mha-medtech" target="_blank">GitHub</a>
+        </div>
+        <div class="footer-copy">© 2026 Mohammad Hassan Abbasi</div>
+    </div>
+</footer>
+
+<script src="lang.js?v=1.6.3"></script>
+<script src="landing.js?v=1.6.3"></script>
+<script>
+const contactT = {
+    en: {
+        contact_badge: "Contact", contact_title: "Get in touch",
+        contact_sub: "Have a question or want to use MedTech Tracker in your clinic?",
+        contact_form_title: "Send us a message",
+        contact_name: "Full Name", contact_email: "Email Address",
+        contact_subject: "Subject", contact_message: "Message",
+        contact_subject_demo: "Request a demo",
+        contact_subject_pricing: "Pricing inquiry",
+        contact_subject_support: "Technical support",
+        contact_subject_partnership: "Partnership",
+        contact_subject_other: "Other",
+        contact_send: "Send Message",
+        contact_success_title: "Message sent!",
+        contact_success_text: "Thank you for reaching out. We'll get back to you within 24 hours.",
+        contact_email_title: "Email",
+        contact_website_title: "Website",
+        contact_clinic_title: "Company",
+        contact_clinic_text: "Kayazh Biomedical Engineering Co., Kerman, Iran",
+        contact_hours_title: "Response Time",
+        contact_hours_text: "We typically respond within 24 hours on business days.",
+        nav_contact: "Contact"
+    },
+    de: {
+        contact_badge: "Kontakt", contact_title: "Kontakt aufnehmen",
+        contact_sub: "Haben Sie eine Frage oder möchten Sie MedTech Tracker in Ihrer Klinik nutzen?",
+        contact_form_title: "Nachricht senden",
+        contact_name: "Vollständiger Name", contact_email: "E-Mail-Adresse",
+        contact_subject: "Betreff", contact_message: "Nachricht",
+        contact_subject_demo: "Demo anfordern",
+        contact_subject_pricing: "Preisanfrage",
+        contact_subject_support: "Technischer Support",
+        contact_subject_partnership: "Partnerschaft",
+        contact_subject_other: "Sonstiges",
+        contact_send: "Nachricht senden",
+        contact_success_title: "Nachricht gesendet!",
+        contact_success_text: "Vielen Dank. Wir melden uns innerhalb von 24 Stunden.",
+        contact_email_title: "E-Mail",
+        contact_website_title: "Webseite",
+        contact_clinic_title: "Unternehmen",
+        contact_clinic_text: "Kayazh Biomedizintechnik, Kerman, Iran",
+        contact_hours_title: "Antwortzeit",
+        contact_hours_text: "Wir antworten in der Regel innerhalb von 24 Stunden.",
+        nav_contact: "Kontakt"
+    },
+    fa: {
+        contact_badge: "تماس", contact_title: "تماس با ما",
+        contact_sub: "سوالی دارید یا می‌خواهید از مدتک ترکر در کلینیک خود استفاده کنید؟",
+        contact_form_title: "پیام بفرستید",
+        contact_name: "نام کامل", contact_email: "آدرس ایمیل",
+        contact_subject: "موضوع", contact_message: "پیام",
+        contact_subject_demo: "درخواست دمو",
+        contact_subject_pricing: "استعلام قیمت",
+        contact_subject_support: "پشتیبانی فنی",
+        contact_subject_partnership: "همکاری",
+        contact_subject_other: "سایر",
+        contact_send: "ارسال پیام",
+        contact_success_title: "پیام ارسال شد!",
+        contact_success_text: "ممنون از تماس شما. ظرف ۲۴ ساعت پاسخ می‌دهیم.",
+        contact_email_title: "ایمیل",
+        contact_website_title: "وبسایت",
+        contact_clinic_title: "شرکت",
+        contact_clinic_text: "شرکت مهندسی پزشکی کایاژ، کرمان، ایران",
+        contact_hours_title: "زمان پاسخ",
+        contact_hours_text: "معمولاً ظرف ۲۴ ساعت در روزهای کاری پاسخ می‌دهیم.",
+        nav_contact: "تماس"
+    }
+};
+
+function submitContact() {
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+
+    if (!name || !email || !message) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    document.getElementById('contactFormWrap').style.display = 'none';
+    document.getElementById('contactSuccess').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const lang = getLang();
+    const t = { ...landingTranslations[lang], ...contactT[lang] };
+    const isRtl = lang === 'fa';
+
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    document.querySelector('.lang-select').value = lang;
+    if (document.querySelector('.lang-select-mobile')) {
+        document.querySelector('.lang-select-mobile').value = lang;
+    }
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+});
+
+function changeLang(lang) {
+    setLang(lang);
+    const t = { ...landingTranslations[lang], ...contactT[lang] };
+    const isRtl = lang === 'fa';
+
+    document.documentElement.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+
+    const selects = document.querySelectorAll('.lang-select, .lang-select-mobile');
+    selects.forEach(s => s.value = lang);
+}
+</script>
+</body>
+</html>
