@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MedTracker">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedTech Tracker — Dashboard</title>
     <link rel="stylesheet" href="style.css?v=1.5.2">
 </head>
 <body>
-
+<div class="ios-install-banner" id="iosInstallBanner" style="display:none;">
+    <div class="ios-banner-content">
+        <span class="ios-banner-icon">📲</span>
+        <div class="ios-banner-text">
+            <strong data-i18n="ios_install_title">Install MedTech Tracker</strong>
+            <span data-i18n="ios_install_desc">Tap Share → Add to Home Screen for the best experience</span>
+        </div>
+        <button class="ios-banner-close" onclick="closeIOSBanner()">✕</button>
+    </div>
+</div>
 <div class="spinner-overlay" id="spinnerOverlay">
     <div class="spinner"></div>
     <div class="spinner-text" id="spinnerText">Loading...</div>
@@ -51,10 +67,16 @@
                 <span class="nav-badge">Soon</span>
             </button>
 
-            <div class="nav-section">Other</div>
-            <button class="nav-item" onclick="showPage('about')">
-                <span class="nav-icon">ℹ️</span>
-                <span data-i18n="nav_about">About</span>
+<div class="nav-section">Other</div>
+<button class="nav-item" onclick="showPage('about')">
+    <span class="nav-icon">ℹ️</span>
+    <span data-i18n="nav_about">About</span>
+</button>
+<div class="nav-section">Account</div>
+<button class="nav-item" onclick="showPage('settings')">
+    <span class="nav-icon">⚙️</span>
+    <span data-i18n="nav_settings">Settings</span>
+</button>
             </button>
         </nav>
 
@@ -249,7 +271,78 @@
             </div>
 
         </div>
+<!-- SETTINGS PAGE -->
+<div id="page-settings" style="display:none;">
+    <div class="settings-wrap">
 
+        <div class="settings-card">
+            <div class="settings-card-header">
+                <div class="settings-avatar" id="settingsAvatar">?</div>
+                <div>
+                    <div class="settings-name" id="settingsName">...</div>
+                    <div class="settings-email" id="settingsEmail">...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <h3 data-i18n="settings_profile">Profile Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="settings_name">Full Name</label>
+                    <input type="text" id="settingsFullName" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="settings_clinic">Clinic Name</label>
+                    <input type="text" id="settingsClinicName" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="settings_phone">Phone</label>
+                    <input type="text" id="settingsPhone" placeholder="+98..." />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="settings_city">City</label>
+                    <input type="text" id="settingsCity" placeholder="e.g. Kerman" />
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label data-i18n="settings_address">Address</label>
+                <textarea id="settingsAddress" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);resize:vertical;outline:none;"></textarea>
+            </div>
+            <div class="form-actions" style="justify-content:flex-start;">
+                <button class="save-btn" onclick="saveProfile()" data-i18n="settings_save">Save Changes</button>
+                <span class="settings-msg" id="profileMsg"></span>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <h3 data-i18n="settings_password">Change Password</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="settings_current_pass">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="••••••••" />
+                </div>
+                <div class="form-group">
+                    <label data-i18n="settings_new_pass">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Min. 6 characters" />
+                </div>
+            </div>
+            <div class="form-actions" style="justify-content:flex-start;">
+                <button class="save-btn" onclick="savePassword()" data-i18n="settings_save_pass">Update Password</button>
+                <span class="settings-msg" id="passwordMsg"></span>
+            </div>
+        </div>
+
+        <div class="settings-card danger-card">
+            <h3 data-i18n="settings_danger">Danger Zone</h3>
+            <p data-i18n="settings_logout_all">Sign out from all devices</p>
+            <button class="danger-btn" onclick="logout()" data-i18n="settings_signout">Sign out</button>
+        </div>
+
+    </div>
+</div>
         <!-- MODAL -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal">
@@ -383,6 +476,12 @@
         </div>
     </div>
 </div>
-    
+    <script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('SW registered'))
+        .catch(err => console.log('SW error:', err));
+}
+</script>
 </body>
 </html>

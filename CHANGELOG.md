@@ -4,6 +4,23 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.6.2] — 2026-06-29
+### Added
+- User settings panel (profile, password, danger zone)
+- Profile update with real-time sidebar sync
+- Password change functionality
+- City, phone, address fields for clinic profile
+
+## [v1.6.1] — 2026-06-27
+### Added
+- PWA support — installable on mobile devices
+- iOS install banner in dashboard
+- Back to home link in login page
+- Language selector in login page top bar
+
+### Fixed
+- iOS install banner position
+
 ## [v1.6.0] — 2026-06-27
 ### Added
 - Repair history tracking for each device

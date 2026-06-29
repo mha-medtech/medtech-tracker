@@ -124,7 +124,24 @@ prob_periodic: "Periodic Service",
 repair_resolved: "Resolved",
 repair_followup: "Needs Follow-up",
 repair_vendor: "Referred to Vendor",
+        ios_install_title: "Install MedTech Tracker",
+ios_install_desc: "Tap Share → Add to Home Screen for the best experience",
 repair_no_records: "No repair records found.",
+        nav_settings: "Settings",
+settings_profile: "Profile Information",
+settings_name: "Full Name",
+settings_clinic: "Clinic Name",
+settings_phone: "Phone",
+settings_city: "City",
+settings_address: "Address",
+settings_save: "Save Changes",
+settings_password: "Change Password",
+settings_current_pass: "Current Password",
+settings_new_pass: "New Password",
+settings_save_pass: "Update Password",
+settings_danger: "Danger Zone",
+settings_logout_all: "Sign out from all devices",
+settings_signout: "Sign out",
 alert_days_left: "days until calibration"
     },
     de: {
@@ -195,8 +212,25 @@ prob_calibration: "Kalibrierung",
 prob_periodic: "Periodischer Service",
 repair_resolved: "Gelöst",
 repair_followup: "Nachverfolgung erforderlich",
+        ios_install_title: "MedTech Tracker installieren",
+ios_install_desc: "Tippen Sie auf Teilen → Zum Home-Bildschirm für die beste Erfahrung",
 repair_vendor: "An Händler weitergeleitet",
 repair_no_records: "Keine Reparaturdaten gefunden.",
+        nav_settings: "Einstellungen",
+settings_profile: "Profilinformationen",
+settings_name: "Vollständiger Name",
+settings_clinic: "Klinikname",
+settings_phone: "Telefon",
+settings_city: "Stadt",
+settings_address: "Adresse",
+settings_save: "Änderungen speichern",
+settings_password: "Passwort ändern",
+settings_current_pass: "Aktuelles Passwort",
+settings_new_pass: "Neues Passwort",
+settings_save_pass: "Passwort aktualisieren",
+settings_danger: "Gefahrenzone",
+settings_logout_all: "Von allen Geräten abmelden",
+settings_signout: "Abmelden",
 alert_days_left: "Tage bis zur Kalibrierung"
     },
     fa: {
@@ -268,7 +302,24 @@ prob_periodic: "سرویس دوره‌ای",
 repair_resolved: "حل شد",
 repair_followup: "نیاز به پیگیری",
 repair_vendor: "ارجاع به نمایندگی",
+        ios_install_title: "نصب مدتک ترکر",
+ios_install_desc: "برای بهترین تجربه: Share → Add to Home Screen را بزنید",
 repair_no_records: "سابقه تعمیری یافت نشد.",
+        nav_settings: "تنظیمات",
+settings_profile: "اطلاعات پروفایل",
+settings_name: "نام کامل",
+settings_clinic: "نام کلینیک",
+settings_phone: "تلفن",
+settings_city: "شهر",
+settings_address: "آدرس",
+settings_save: "ذخیره تغییرات",
+settings_password: "تغییر رمز عبور",
+settings_current_pass: "رمز عبور فعلی",
+settings_new_pass: "رمز عبور جدید",
+settings_save_pass: "بروزرسانی رمز عبور",
+settings_danger: "منطقه خطر",
+settings_logout_all: "خروج از همه دستگاه‌ها",
+settings_signout: "خروج",
 alert_days_left: "روز تا کالیبراسیون"
     }
 };
@@ -708,6 +759,7 @@ window.onload = function() {
 
     loadEquipment();
     changeLanguage(savedLang);
+    checkIOSInstall();
 }
 function checkCalibrationAlerts() {
     const t = translations[currentLang];
@@ -786,30 +838,35 @@ function exportCSV() {
     URL.revokeObjectURL(url);
 }
 const pageTitles = {
-    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', maintenance: 'Repair History', about: 'About' },
-    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', maintenance: 'Reparaturverlauf', about: 'Über' },
-    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', maintenance: 'تاریخچه تعمیرات', about: 'درباره' }
+    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', maintenance: 'Repair History', settings: 'Settings', about: 'About' },
+    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', maintenance: 'Reparaturverlauf', settings: 'Einstellungen', about: 'Über' },
+    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', maintenance: 'تاریخچه تعمیرات', settings: 'تنظیمات', about: 'درباره' }
 };
 
 function showPage(page) {
-const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'about'];
+    const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'settings', 'about'];
     pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
-        if (el) el.style.display = p === page ? 'block' : 'none';
+        if (el) {
+            if (p === page) {
+                el.style.display = 'block';
+                el.style.flex = 'none';
+            } else {
+                el.style.display = 'none';
+                el.style.flex = 'none';
+            }
+        }
     });
-
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
     });
-
     event.currentTarget.classList.add('active');
-
     const titles = pageTitles[currentLang] || pageTitles['en'];
     const titleEl = document.getElementById('pageTitle');
     if (titleEl) titleEl.textContent = titles[page] || page;
-
     if (page === 'warranty') updateWarrantyPage();
     if (page === 'maintenance') populateRepairDevices();
+    if (page === 'settings') loadSettings();
     if (window.innerWidth <= 768) closeSidebar();
 }
 
@@ -1075,5 +1132,173 @@ async function deleteRepair(id) {
 
     } catch (err) {
         alert('Connection error.');
+    }
+}
+function checkIOSInstall() {
+    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = window.navigator.standalone;
+    const dismissed = localStorage.getItem('ios_banner_dismissed');
+
+    if (isIOS && !isStandalone && !dismissed) {
+        document.getElementById('iosInstallBanner').style.display = 'block';
+    }
+}
+
+function closeIOSBanner() {
+    document.getElementById('iosInstallBanner').style.display = 'none';
+    localStorage.setItem('ios_banner_dismissed', 'true');
+}
+// SETTINGS
+
+async function loadSettings() {
+    const user = getUser();
+    if (!user) return;
+
+    try {
+        const res = await fetch(`${API}/user/get.php?user_id=${user.id}`);
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        const u = data.data;
+
+        // header card
+        const avatar = document.getElementById('settingsAvatar');
+        const name = document.getElementById('settingsName');
+        const email = document.getElementById('settingsEmail');
+        if (avatar) avatar.textContent = u.name.charAt(0).toUpperCase();
+        if (name) name.textContent = u.name;
+        if (email) email.textContent = u.email;
+
+        // form fields
+        document.getElementById('settingsFullName').value = u.name || '';
+        document.getElementById('settingsClinicName').value = u.clinic_name || '';
+        document.getElementById('settingsPhone').value = u.phone || '';
+        document.getElementById('settingsCity').value = u.city || '';
+        document.getElementById('settingsAddress').value = u.address || '';
+
+    } catch (err) {
+        console.error('Settings load error:', err);
+    }
+}
+
+async function saveProfile() {
+    const user = getUser();
+    if (!user) return;
+
+    const name = document.getElementById('settingsFullName').value.trim();
+    const clinic_name = document.getElementById('settingsClinicName').value.trim();
+    const phone = document.getElementById('settingsPhone').value.trim();
+    const city = document.getElementById('settingsCity').value.trim();
+    const address = document.getElementById('settingsAddress').value.trim();
+    const msg = document.getElementById('profileMsg');
+
+    if (!name || !clinic_name) {
+        msg.textContent = 'Name and clinic name are required.';
+        msg.className = 'settings-msg error';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/user/update.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: user.id, name, clinic_name, phone, city, address })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            // آپدیت localStorage
+            const updated = { ...user, name: data.data.name, clinic_name: data.data.clinic_name };
+            localStorage.setItem('user', JSON.stringify(updated));
+
+            // آپدیت sidebar
+            const userName = document.getElementById('userName');
+            const userClinic = document.getElementById('userClinic');
+            const userAvatar = document.getElementById('userAvatar');
+            const settingsAvatar = document.getElementById('settingsAvatar');
+            const settingsName = document.getElementById('settingsName');
+
+            if (userName) userName.textContent = data.data.name;
+            if (userClinic) userClinic.textContent = data.data.clinic_name;
+            if (userAvatar) userAvatar.textContent = data.data.name.charAt(0).toUpperCase();
+            if (settingsAvatar) settingsAvatar.textContent = data.data.name.charAt(0).toUpperCase();
+            if (settingsName) settingsName.textContent = data.data.name;
+
+            // آپدیت welcome message
+            const welcomeMsg = document.getElementById('welcomeMsg');
+            if (welcomeMsg) {
+                const welcomeLabels = {
+                    en: `Welcome, ${data.data.name}`,
+                    de: `Willkommen, ${data.data.name}`,
+                    fa: `خوش آمدید، ${data.data.name}`
+                };
+                welcomeMsg.textContent = welcomeLabels[currentLang] || `Welcome, ${data.data.name}`;
+            }
+
+            msg.textContent = 'Profile updated successfully!';
+            msg.className = 'settings-msg success';
+            setTimeout(() => { msg.textContent = ''; }, 3000);
+        } else {
+            msg.textContent = data.message;
+            msg.className = 'settings-msg error';
+        }
+
+    } catch (err) {
+        msg.textContent = 'Connection error.';
+        msg.className = 'settings-msg error';
+    }
+}
+
+async function savePassword() {
+    const user = getUser();
+    if (!user) return;
+
+    const current_password = document.getElementById('currentPassword').value;
+    const new_password = document.getElementById('newPassword').value;
+    const msg = document.getElementById('passwordMsg');
+
+    if (!current_password || !new_password) {
+        msg.textContent = 'Please fill in both fields.';
+        msg.className = 'settings-msg error';
+        return;
+    }
+
+    if (new_password.length < 6) {
+        msg.textContent = 'New password must be at least 6 characters.';
+        msg.className = 'settings-msg error';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/user/update.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id,
+                name: user.name,
+                clinic_name: user.clinic_name,
+                current_password,
+                new_password
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            msg.textContent = 'Password updated successfully!';
+            msg.className = 'settings-msg success';
+            setTimeout(() => { msg.textContent = ''; }, 3000);
+        } else {
+            msg.textContent = data.message;
+            msg.className = 'settings-msg error';
+        }
+
+    } catch (err) {
+        msg.textContent = 'Connection error.';
+        msg.className = 'settings-msg error';
     }
 }
