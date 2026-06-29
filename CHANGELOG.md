@@ -4,6 +4,12 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.6.3] — 2026-06-29
+### Added
+- Quick Actions section in dashboard
+- Upcoming Calibrations widget with urgency indicators
+- Direct navigation from dashboard to pages
+
 ## [v1.6.2] — 2026-06-29
 ### Added
 - User settings panel (profile, password, danger zone)

@@ -145,6 +145,11 @@ settings_logout_all: "Sign out from all devices",
 qa_add_equipment: "Add Equipment",
 qa_add_repair: "Log Repair",
 qa_view_equipment: "View Equipment",
+        upcoming_title: "Upcoming Calibrations",
+upcoming_empty: "No upcoming calibrations in the next 30 days.",
+upcoming_days_left: "days left",
+upcoming_today: "Today",
+upcoming_tomorrow: "Tomorrow",
 qa_view_warranty: "Warranty Status",
 settings_signout: "Sign out",
 alert_days_left: "days until calibration"
@@ -239,6 +244,11 @@ settings_logout_all: "Von allen Geräten abmelden",
 qa_add_equipment: "Gerät hinzufügen",
 qa_add_repair: "Reparatur erfassen",
 qa_view_equipment: "Geräte anzeigen",
+        upcoming_title: "Bevorstehende Kalibrierungen",
+upcoming_empty: "Keine bevorstehenden Kalibrierungen in den nächsten 30 Tagen.",
+upcoming_days_left: "Tage verbleibend",
+upcoming_today: "Heute",
+upcoming_tomorrow: "Morgen",
 qa_view_warranty: "Garantiestatus",
 settings_signout: "Abmelden",
 alert_days_left: "Tage bis zur Kalibrierung"
@@ -334,6 +344,11 @@ settings_signout: "خروج",
 qa_add_equipment: "افزودن تجهیز",
 qa_add_repair: "ثبت تعمیر",
 qa_view_equipment: "مشاهده تجهیزات",
+        upcoming_title: "کالیبراسیون‌های پیش رو",
+upcoming_empty: "کالیبراسیونی در ۳۰ روز آینده وجود ندارد.",
+upcoming_days_left: "روز مانده",
+upcoming_today: "امروز",
+upcoming_tomorrow: "فردا",
 qa_view_warranty: "وضعیت گارانتی",
 alert_days_left: "روز تا کالیبراسیون"
     }
@@ -365,6 +380,7 @@ function changeLanguage(lang) {
     checkCalibrationAlerts();
     checkWarrantyAlerts();
     updateWarrantyBadges();
+    updateUpcomingCalibrations();
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         const logoutLabels = { en: 'Sign out', de: 'Abmelden', fa: 'خروج' };
@@ -625,6 +641,7 @@ function updateStats() {
         updateChart();
         checkCalibrationAlerts();
     checkWarrantyAlerts();
+    updateUpcomingCalibrations();
 }
 
 const API = 'https://medtracker.freedev.app/api';
@@ -1346,4 +1363,66 @@ function showPageDirect(page) {
     if (page === 'warranty') updateWarrantyPage();
     if (page === 'maintenance') populateRepairDevices();
     if (page === 'settings') loadSettings();
+}
+function updateUpcomingCalibrations() {
+    const t = translations[currentLang];
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const list = document.getElementById('upcomingList');
+    const badge = document.getElementById('upcomingCount');
+    if (!list || !badge) return;
+
+    const items = [];
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const location = row.cells[1].textContent;
+        const nextDate = row.cells[3].textContent;
+        if (!nextDate || nextDate === '-') return;
+
+        const nDate = new Date(nextDate);
+        const diff = Math.ceil((nDate - today) / (1000 * 60 * 60 * 24));
+
+        if (diff >= 0 && diff <= 30) {
+            items.push({ name, location, nextDate, diff });
+        }
+    });
+
+    items.sort((a, b) => a.diff - b.diff);
+    badge.textContent = items.length;
+
+    if (items.length === 0) {
+        list.innerHTML = `<div class="no-results">${t.upcoming_empty}</div>`;
+        return;
+    }
+
+    list.innerHTML = '';
+    items.forEach(item => {
+        const urgencyClass = item.diff <= 3 ? 'urgent' : item.diff <= 7 ? 'warning' : 'normal';
+        const icon = item.diff <= 3 ? '🔴' : item.diff <= 7 ? '🟡' : '🟢';
+
+        let daysText = '';
+        if (item.diff === 0) daysText = t.upcoming_today;
+        else if (item.diff === 1) daysText = t.upcoming_tomorrow;
+        else daysText = `${item.diff} ${t.upcoming_days_left}`;
+
+        const el = document.createElement('div');
+        el.className = 'upcoming-item';
+        el.onclick = () => showPageDirect('equipment');
+        el.innerHTML = `
+            <div class="upcoming-item-left">
+                <div class="upcoming-item-icon ${urgencyClass}">${icon}</div>
+                <div>
+                    <div class="upcoming-item-name">${item.name}</div>
+                    <div class="upcoming-item-location">${item.location}</div>
+                </div>
+            </div>
+            <div class="upcoming-item-right">
+                <div class="upcoming-days ${urgencyClass}">${daysText}</div>
+                <div class="upcoming-date">${item.nextDate}</div>
+            </div>
+        `;
+        list.appendChild(el);
+    });
 }

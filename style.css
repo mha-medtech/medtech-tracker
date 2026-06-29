@@ -1187,3 +1187,112 @@ footer a {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+.upcoming-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.upcoming-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.upcoming-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.upcoming-badge {
+    background: var(--blue);
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.upcoming-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upcoming-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upcoming-item:hover {
+    border-color: var(--blue);
+    background: #f0f7ff;
+}
+
+[data-theme="dark"] .upcoming-item:hover {
+    background: #1e3a5f;
+}
+
+.upcoming-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upcoming-item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.upcoming-item-icon.urgent { background: #fee2e2; }
+.upcoming-item-icon.warning { background: #fef3c7; }
+.upcoming-item-icon.normal { background: #e8f0fe; }
+
+.upcoming-item-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.upcoming-item-location {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.upcoming-item-right {
+    text-align: right;
+}
+
+.upcoming-days {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.upcoming-days.urgent { color: #ef4444; }
+.upcoming-days.warning { color: #f59e0b; }
+.upcoming-days.normal { color: var(--blue); }
+
+.upcoming-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
