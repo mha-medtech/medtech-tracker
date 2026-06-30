@@ -4,6 +4,14 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.6.4] — 2026-06-30
+### Added
+- Reports page with full analytics (status chart, warranty chart, repair cost chart, upcoming calibrations table)
+
+### Fixed
+- Critical bug: page-reports and page-settings were nested incorrectly causing blank pages
+- Dashboard HTML structure fully cleaned and validated
+
 ## [v1.6.3] — 2026-06-29
 ### Added
 - Quick Actions section in dashboard
