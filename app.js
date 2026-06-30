@@ -149,6 +149,12 @@ qa_view_equipment: "View Equipment",
 upcoming_empty: "No upcoming calibrations in the next 30 days.",
 upcoming_days_left: "days left",
 upcoming_today: "Today",
+        report_summary: "Summary",
+report_total_repairs: "Total Repairs",
+report_warranty_expiring: "Warranty Expiring Soon",
+report_warranty_status: "Warranty Status",
+report_repair_cost: "Repair Costs",
+report_days_left: "Days Left",
 upcoming_tomorrow: "Tomorrow",
 qa_view_warranty: "Warranty Status",
 settings_signout: "Sign out",
@@ -209,6 +215,12 @@ repair_device: "Gerät",
 repair_date: "Reparaturdatum",
 repair_problem_type: "Problemtyp",
 repair_status_after: "Status danach",
+        report_summary: "Zusammenfassung",
+report_total_repairs: "Reparaturen gesamt",
+report_warranty_expiring: "Garantie läuft bald ab",
+report_warranty_status: "Garantiestatus",
+report_repair_cost: "Reparaturkosten",
+report_days_left: "Verbleibende Tage",
 repair_technician: "Techniker / Unternehmen",
 repair_cost: "Kosten",
 repair_problem_desc: "Problembeschreibung",
@@ -345,6 +357,12 @@ qa_add_equipment: "افزودن تجهیز",
 qa_add_repair: "ثبت تعمیر",
 qa_view_equipment: "مشاهده تجهیزات",
         upcoming_title: "کالیبراسیون‌های پیش رو",
+        report_summary: "خلاصه",
+report_total_repairs: "کل تعمیرات",
+report_warranty_expiring: "گارانتی در حال انقضا",
+report_warranty_status: "وضعیت گارانتی",
+report_repair_cost: "هزینه تعمیرات",
+report_days_left: "روز مانده",
 upcoming_empty: "کالیبراسیونی در ۳۰ روز آینده وجود ندارد.",
 upcoming_days_left: "روز مانده",
 upcoming_today: "امروز",
@@ -870,13 +888,13 @@ function exportCSV() {
     URL.revokeObjectURL(url);
 }
 const pageTitles = {
-    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', maintenance: 'Repair History', settings: 'Settings', about: 'About' },
-    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', maintenance: 'Reparaturverlauf', settings: 'Einstellungen', about: 'Über' },
-    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', maintenance: 'تاریخچه تعمیرات', settings: 'تنظیمات', about: 'درباره' }
+    en: { dashboard: 'Dashboard', equipment: 'Equipment', warranty: 'Warranty Management', maintenance: 'Repair History', settings: 'Settings', reports: 'Reports', about: 'About' },
+    de: { dashboard: 'Dashboard', equipment: 'Geräte', warranty: 'Garantieverwaltung', maintenance: 'Reparaturverlauf', settings: 'Einstellungen', reports: 'Berichte', about: 'Über' },
+    fa: { dashboard: 'داشبورد', equipment: 'تجهیزات', warranty: 'مدیریت گارانتی', maintenance: 'تاریخچه تعمیرات', settings: 'تنظیمات', reports: 'گزارش‌ها', about: 'درباره' }
 };
 
 function showPage(page) {
-    const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'settings', 'about'];
+const pages = ['dashboard', 'equipment', 'warranty', 'maintenance', 'settings', 'reports', 'about'];
     pages.forEach(p => {
         const el = document.getElementById(`page-${p}`);
         if (el) {
@@ -899,6 +917,7 @@ function showPage(page) {
     if (page === 'warranty') updateWarrantyPage();
     if (page === 'maintenance') populateRepairDevices();
     if (page === 'settings') loadSettings();
+    if (page === 'reports') loadReports();
     if (window.innerWidth <= 768) closeSidebar();
 }
 
@@ -1425,4 +1444,191 @@ function updateUpcomingCalibrations() {
         `;
         list.appendChild(el);
     });
+}
+
+// REPORTS
+let reportStatusChart = null;
+let reportWarrantyChart = null;
+let reportRepairChart = null;
+
+async function loadReports() {
+    const user = getUser();
+    if (!user) return;
+
+    const rows = document.querySelectorAll('#equipmentBody tr:not(#noResults)');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    // Stats
+    const total = rows.length;
+    const active = document.querySelectorAll('#equipmentBody .status.good').length;
+    const needs = document.querySelectorAll('#equipmentBody .status.warning').length;
+    const out = document.querySelectorAll('#equipmentBody .status.danger').length;
+
+    let warrantyExpiring = 0;
+    rows.forEach(row => {
+        const warranty = row.getAttribute('data-warranty');
+        if (!warranty || warranty === '-' || warranty === 'null') return;
+        const diff = Math.ceil((new Date(warranty) - today) / (1000 * 60 * 60 * 24));
+        if (diff >= 0 && diff <= 30) warrantyExpiring++;
+    });
+
+// Repair count از ردیف‌های موجود
+    let totalRepairs = 0;
+    try {
+        const repairRows = document.querySelectorAll('.repair-card');
+        totalRepairs = repairRows.length;
+    } catch (e) {}
+
+    // Update stats
+    document.getElementById('reportTotal').textContent = total;
+    document.getElementById('reportActive').textContent = active;
+    document.getElementById('reportNeeds').textContent = needs;
+    document.getElementById('reportOut').textContent = out;
+    document.getElementById('reportRepairs').textContent = totalRepairs;
+    document.getElementById('reportWarrantyExpiring').textContent = warrantyExpiring;
+
+    // Status Chart
+    const t = translations[currentLang];
+    if (reportStatusChart) reportStatusChart.destroy();
+    const ctx1 = document.getElementById('reportStatusChart').getContext('2d');
+    reportStatusChart = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+            labels: [t.status_active, t.status_needs_check, t.status_out],
+            datasets: [{
+                data: [active, needs, out],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 11 }, color: '#666', padding: 12 }
+                }
+            }
+        }
+    });
+
+    // Warranty Chart
+    let warrantyValid = 0, warrantyExpired = 0, warrantyExpiringSoon = 0, warrantyNone = 0;
+    rows.forEach(row => {
+        const warranty = row.getAttribute('data-warranty');
+        if (!warranty || warranty === '-' || warranty === 'null') { warrantyNone++; return; }
+        const diff = Math.ceil((new Date(warranty) - today) / (1000 * 60 * 60 * 24));
+        if (diff < 0) warrantyExpired++;
+        else if (diff <= 30) warrantyExpiringSoon++;
+        else warrantyValid++;
+    });
+
+    if (reportWarrantyChart) reportWarrantyChart.destroy();
+    const ctx2 = document.getElementById('reportWarrantyChart').getContext('2d');
+    reportWarrantyChart = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: [t.warranty_ok, t.warranty_expiring, t.warranty_expired, 'No Warranty'],
+            datasets: [{
+                data: [warrantyValid, warrantyExpiringSoon, warrantyExpired, warrantyNone],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#94a3b8'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 11 }, color: '#666', padding: 12 }
+                }
+            }
+        }
+    });
+
+    // Repair Cost Bar Chart
+    const months = [];
+    const costs = [];
+    for (let i = 5; i >= 0; i--) {
+        const d = new Date();
+        d.setMonth(d.getMonth() - i);
+        months.push(d.toLocaleString('default', { month: 'short' }));
+        costs.push(0);
+    }
+
+    if (reportRepairChart) reportRepairChart.destroy();
+    const ctx3 = document.getElementById('reportRepairChart').getContext('2d');
+    reportRepairChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [{
+                label: t.report_repair_cost,
+                data: costs,
+                backgroundColor: 'rgba(26,115,232,0.7)',
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)' },
+                    ticks: { font: { size: 11 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 11 } }
+                }
+            }
+        }
+    });
+
+    // Upcoming Calibrations Table
+    const tbody = document.getElementById('reportCalibrationBody');
+    tbody.innerHTML = '';
+    const upcoming = [];
+
+    rows.forEach(row => {
+        const name = row.cells[0].textContent;
+        const location = row.cells[1].textContent;
+        const nextDate = row.cells[3].textContent;
+        const statusEl = row.cells[4].querySelector('.status');
+        const status = statusEl ? statusEl.textContent : '-';
+        const statusClass = statusEl ? statusEl.className.replace('status ', '') : '';
+
+        if (!nextDate || nextDate === '-') return;
+        const diff = Math.ceil((new Date(nextDate) - today) / (1000 * 60 * 60 * 24));
+        if (diff >= 0 && diff <= 60) upcoming.push({ name, location, nextDate, status, statusClass, diff });
+    });
+
+    upcoming.sort((a, b) => a.diff - b.diff);
+
+    if (upcoming.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="no-results">${t.upcoming_empty}</td></tr>`;
+    } else {
+        upcoming.forEach(item => {
+            const urgency = item.diff <= 3 ? 'danger' : item.diff <= 7 ? 'warning' : 'good';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.location}</td>
+                <td>${item.nextDate}</td>
+                <td><span class="status ${item.statusClass}">${item.status}</span></td>
+                <td><span class="status ${urgency}">${item.diff} ${t.report_days_left}</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
 }

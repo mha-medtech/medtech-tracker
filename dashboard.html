@@ -2,16 +2,16 @@
 <html lang="en" data-theme="light">
 <head>
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="apple-touch-startup-image" href="icons/icon-512.png">
+    <link rel="apple-touch-startup-image" href="icons/icon-512.png">
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1a73e8">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="MedTracker">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#1a73e8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="MedTracker">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedTech Tracker — Dashboard</title>
-    <link rel="stylesheet" href="style.css?v=1.5.2">
+    <link rel="stylesheet" href="style.css?v=1.6.4">
 </head>
 <body>
 <div class="ios-install-banner" id="iosInstallBanner" style="display:none;">
@@ -58,25 +58,24 @@
                 <span data-i18n="nav_warranty">Warranty</span>
             </button>
             <button class="nav-item" onclick="showPage('maintenance')">
-    <span class="nav-icon">🛠️</span>
-    <span data-i18n="nav_maintenance">Maintenance</span>
-</button>
-            <button class="nav-item disabled">
+                <span class="nav-icon">🛠️</span>
+                <span data-i18n="nav_maintenance">Maintenance</span>
+            </button>
+            <button class="nav-item" onclick="showPage('reports')">
                 <span class="nav-icon">📈</span>
                 <span data-i18n="nav_reports">Reports</span>
-                <span class="nav-badge">Soon</span>
             </button>
 
-<div class="nav-section">Other</div>
-<button class="nav-item" onclick="showPage('about')">
-    <span class="nav-icon">ℹ️</span>
-    <span data-i18n="nav_about">About</span>
-</button>
-<div class="nav-section">Account</div>
-<button class="nav-item" onclick="showPage('settings')">
-    <span class="nav-icon">⚙️</span>
-    <span data-i18n="nav_settings">Settings</span>
-</button>
+            <div class="nav-section">Other</div>
+            <button class="nav-item" onclick="showPage('about')">
+                <span class="nav-icon">ℹ️</span>
+                <span data-i18n="nav_about">About</span>
+            </button>
+
+            <div class="nav-section">Account</div>
+            <button class="nav-item" onclick="showPage('settings')">
+                <span class="nav-icon">⚙️</span>
+                <span data-i18n="nav_settings">Settings</span>
             </button>
         </nav>
 
@@ -96,23 +95,23 @@
     <div class="main-content">
 
         <!-- HEADER -->
-<header class="main-header">
-    <button class="hamburger" onclick="toggleSidebar()">
-        <span></span><span></span><span></span>
-    </button>
-    <div class="header-title" id="pageTitle">Dashboard</div>
-    <div class="welcome-msg" id="welcomeMsg"></div>
-    <div class="header-actions-right">
-        <select class="lang-switcher" onchange="changeLanguage(this.value)">
-            <option value="en">EN</option>
-            <option value="de">DE</option>
-            <option value="fa">FA</option>
-        </select>
-        <button class="theme-toggle" onclick="toggleTheme()">
-            <span class="theme-icon">🌙</span>
-        </button>
-    </div>
-</header>
+        <header class="main-header">
+            <button class="hamburger" onclick="toggleSidebar()">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="header-title" id="pageTitle">Dashboard</div>
+            <div class="welcome-msg" id="welcomeMsg"></div>
+            <div class="header-actions-right">
+                <select class="lang-switcher" onchange="changeLanguage(this.value)">
+                    <option value="en">EN</option>
+                    <option value="de">DE</option>
+                    <option value="fa">FA</option>
+                </select>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
 
         <!-- PAGES -->
         <div class="page-content">
@@ -137,27 +136,29 @@
                         <p class="number danger" id="statOut">0</p>
                     </div>
                 </div>
-<div class="quick-actions">
-    <h2 data-i18n="quick_actions">Quick Actions</h2>
-    <div class="qa-grid">
-        <button class="qa-btn" onclick="showPageDirect('equipment'); setTimeout(toggleModal, 100)">
-            <span class="qa-icon">➕</span>
-            <span data-i18n="qa_add_equipment">Add Equipment</span>
-        </button>
-        <button class="qa-btn" onclick="showPageDirect('maintenance'); setTimeout(toggleRepairModal, 100)">
-            <span class="qa-icon">🛠️</span>
-            <span data-i18n="qa_add_repair">Log Repair</span>
-        </button>
-        <button class="qa-btn" onclick="showPageDirect('equipment')">
-            <span class="qa-icon">🔧</span>
-            <span data-i18n="qa_view_equipment">View Equipment</span>
-        </button>
-        <button class="qa-btn" onclick="showPageDirect('warranty')">
-            <span class="qa-icon">🛡️</span>
-            <span data-i18n="qa_view_warranty">Warranty Status</span>
-        </button>
-    </div>
-</div>
+
+                <div class="quick-actions">
+                    <h2 data-i18n="quick_actions">Quick Actions</h2>
+                    <div class="qa-grid">
+                        <button class="qa-btn" onclick="showPageDirect('equipment'); setTimeout(toggleModal, 100)">
+                            <span class="qa-icon">➕</span>
+                            <span data-i18n="qa_add_equipment">Add Equipment</span>
+                        </button>
+                        <button class="qa-btn" onclick="showPageDirect('maintenance'); setTimeout(toggleRepairModal, 100)">
+                            <span class="qa-icon">🛠️</span>
+                            <span data-i18n="qa_add_repair">Log Repair</span>
+                        </button>
+                        <button class="qa-btn" onclick="showPageDirect('equipment')">
+                            <span class="qa-icon">🔧</span>
+                            <span data-i18n="qa_view_equipment">View Equipment</span>
+                        </button>
+                        <button class="qa-btn" onclick="showPageDirect('warranty')">
+                            <span class="qa-icon">🛡️</span>
+                            <span data-i18n="qa_view_warranty">Warranty Status</span>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="chart-section">
                     <div class="chart-card">
                         <h2 data-i18n="chart_title">Equipment Status Overview</h2>
@@ -180,15 +181,16 @@
                         <ul id="warrantyAlertsList"></ul>
                     </div>
                 </div>
+
                 <div class="upcoming-section">
-    <div class="upcoming-header">
-        <h2 data-i18n="upcoming_title">Upcoming Calibrations</h2>
-        <span class="upcoming-badge" id="upcomingCount">0</span>
-    </div>
-    <div id="upcomingList" class="upcoming-list">
-        <div class="no-results" data-i18n="upcoming_empty">No upcoming calibrations in the next 30 days.</div>
-    </div>
-</div>
+                    <div class="upcoming-header">
+                        <h2 data-i18n="upcoming_title">Upcoming Calibrations</h2>
+                        <span class="upcoming-badge" id="upcomingCount">0</span>
+                    </div>
+                    <div id="upcomingList" class="upcoming-list">
+                        <div class="no-results" data-i18n="upcoming_empty">No upcoming calibrations in the next 30 days.</div>
+                    </div>
+                </div>
             </div>
 
             <!-- EQUIPMENT PAGE -->
@@ -248,24 +250,101 @@
             </div>
 
             <!-- MAINTENANCE PAGE -->
-<div id="page-maintenance" style="display:none;">
-    <div class="equipment-list">
-        <div class="list-header">
-            <h2 data-i18n="maintenance_title">Repair History</h2>
-            <div class="list-controls">
-                <select id="repairEquipmentFilter" onchange="loadRepairs()">
-                    <option value="" data-i18n="repair_select_device">Select device...</option>
-                </select>
-                <button class="add-btn" onclick="toggleRepairModal()" data-i18n="btn_add_repair">+ Add Repair</button>
-            </div>
-        </div>
+            <div id="page-maintenance" style="display:none;">
+                <div class="equipment-list">
+                    <div class="list-header">
+                        <h2 data-i18n="maintenance_title">Repair History</h2>
+                        <div class="list-controls">
+                            <select id="repairEquipmentFilter" onchange="loadRepairs()">
+                                <option value="" data-i18n="repair_select_device">Select device...</option>
+                            </select>
+                            <button class="add-btn" onclick="toggleRepairModal()" data-i18n="btn_add_repair">+ Add Repair</button>
+                        </div>
+                    </div>
 
-        <div id="repairsList">
-            <div class="no-results" data-i18n="repair_select_prompt">Select a device to view its repair history.</div>
-        </div>
-    </div>
-</div>
-            
+                    <div id="repairsList">
+                        <div class="no-results" data-i18n="repair_select_prompt">Select a device to view its repair history.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTS PAGE -->
+            <div id="page-reports" style="display:none;">
+                <div class="reports-grid">
+                    <!-- Stats Summary -->
+                    <div class="report-card full-width">
+                        <h2 data-i18n="report_summary">Summary</h2>
+                        <div class="report-stats">
+                            <div class="report-stat">
+                                <div class="report-stat-num" id="reportTotal">0</div>
+                                <div class="report-stat-label" data-i18n="stat_total">Total Equipment</div>
+                            </div>
+                            <div class="report-stat">
+                                <div class="report-stat-num good" id="reportActive">0</div>
+                                <div class="report-stat-label" data-i18n="stat_active">Active</div>
+                            </div>
+                            <div class="report-stat">
+                                <div class="report-stat-num warning" id="reportNeeds">0</div>
+                                <div class="report-stat-label" data-i18n="stat_maintenance">Needs Check</div>
+                            </div>
+                            <div class="report-stat">
+                                <div class="report-stat-num danger" id="reportOut">0</div>
+                                <div class="report-stat-label" data-i18n="stat_out">Out of Service</div>
+                            </div>
+                            <div class="report-stat">
+                                <div class="report-stat-num" id="reportRepairs">0</div>
+                                <div class="report-stat-label" data-i18n="report_total_repairs">Total Repairs</div>
+                            </div>
+                            <div class="report-stat">
+                                <div class="report-stat-num warning" id="reportWarrantyExpiring">0</div>
+                                <div class="report-stat-label" data-i18n="report_warranty_expiring">Warranty Expiring</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Chart -->
+                    <div class="report-card">
+                        <h2 data-i18n="chart_title">Equipment Status</h2>
+                        <div class="report-chart-container">
+                            <canvas id="reportStatusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Warranty Chart -->
+                    <div class="report-card">
+                        <h2 data-i18n="report_warranty_status">Warranty Status</h2>
+                        <div class="report-chart-container">
+                            <canvas id="reportWarrantyChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Repair Cost Chart -->
+                    <div class="report-card full-width">
+                        <h2 data-i18n="report_repair_cost">Repair Costs</h2>
+                        <div class="report-chart-container-wide">
+                            <canvas id="reportRepairChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Calibrations Table -->
+                    <div class="report-card full-width">
+                        <h2 data-i18n="upcoming_title">Upcoming Calibrations</h2>
+                        <table class="report-table">
+                            <thead>
+                                <tr>
+                                    <th data-i18n="col_device">Device</th>
+                                    <th data-i18n="col_location">Location</th>
+                                    <th data-i18n="col_next_date">Next Calibration</th>
+                                    <th data-i18n="col_status">Status</th>
+                                    <th data-i18n="report_days_left">Days Left</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportCalibrationBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- ABOUT PAGE -->
             <div id="page-about" style="display:none;">
                 <div class="about-card">
@@ -273,7 +352,7 @@
                         <div class="about-avatar">MHA</div>
                         <div>
                             <h1>MedTech Tracker</h1>
-                            <p class="about-version">v1.5.2 — June 2026</p>
+                            <p class="about-version">v1.6.4 — June 2026</p>
                         </div>
                     </div>
                     <div class="about-section">
@@ -299,79 +378,79 @@
                 </div>
             </div>
 
-        </div>
-<!-- SETTINGS PAGE -->
-<div id="page-settings" style="display:none;">
-    <div class="settings-wrap">
+            <!-- SETTINGS PAGE -->
+            <div id="page-settings" style="display:none;">
+                <div class="settings-wrap">
+                    <div class="settings-card">
+                        <div class="settings-card-header">
+                            <div class="settings-avatar" id="settingsAvatar">?</div>
+                            <div>
+                                <div class="settings-name" id="settingsName">...</div>
+                                <div class="settings-email" id="settingsEmail">...</div>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="settings-card">
-            <div class="settings-card-header">
-                <div class="settings-avatar" id="settingsAvatar">?</div>
-                <div>
-                    <div class="settings-name" id="settingsName">...</div>
-                    <div class="settings-email" id="settingsEmail">...</div>
+                    <div class="settings-card">
+                        <h3 data-i18n="settings_profile">Profile Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-i18n="settings_name">Full Name</label>
+                                <input type="text" id="settingsFullName" />
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="settings_clinic">Clinic Name</label>
+                                <input type="text" id="settingsClinicName" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-i18n="settings_phone">Phone</label>
+                                <input type="text" id="settingsPhone" placeholder="+98..." />
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="settings_city">City</label>
+                                <input type="text" id="settingsCity" placeholder="e.g. Kerman" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom:16px;">
+                            <label data-i18n="settings_address">Address</label>
+                            <textarea id="settingsAddress" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);resize:vertical;outline:none;"></textarea>
+                        </div>
+                        <div class="form-actions" style="justify-content:flex-start;">
+                            <button class="save-btn" onclick="saveProfile()" data-i18n="settings_save">Save Changes</button>
+                            <span class="settings-msg" id="profileMsg"></span>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3 data-i18n="settings_password">Change Password</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-i18n="settings_current_pass">Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="••••••••" />
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="settings_new_pass">New Password</label>
+                                <input type="password" id="newPassword" placeholder="Min. 6 characters" />
+                            </div>
+                        </div>
+                        <div class="form-actions" style="justify-content:flex-start;">
+                            <button class="save-btn" onclick="savePassword()" data-i18n="settings_save_pass">Update Password</button>
+                            <span class="settings-msg" id="passwordMsg"></span>
+                        </div>
+                    </div>
+
+                    <div class="settings-card danger-card">
+                        <h3 data-i18n="settings_danger">Danger Zone</h3>
+                        <p data-i18n="settings_logout_all">Sign out from all devices</p>
+                        <button class="danger-btn" onclick="logout()" data-i18n="settings_signout">Sign out</button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <div class="settings-card">
-            <h3 data-i18n="settings_profile">Profile Information</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label data-i18n="settings_name">Full Name</label>
-                    <input type="text" id="settingsFullName" />
-                </div>
-                <div class="form-group">
-                    <label data-i18n="settings_clinic">Clinic Name</label>
-                    <input type="text" id="settingsClinicName" />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label data-i18n="settings_phone">Phone</label>
-                    <input type="text" id="settingsPhone" placeholder="+98..." />
-                </div>
-                <div class="form-group">
-                    <label data-i18n="settings_city">City</label>
-                    <input type="text" id="settingsCity" placeholder="e.g. Kerman" />
-                </div>
-            </div>
-            <div class="form-group" style="margin-bottom:16px;">
-                <label data-i18n="settings_address">Address</label>
-                <textarea id="settingsAddress" rows="2" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg);color:var(--text);resize:vertical;outline:none;"></textarea>
-            </div>
-            <div class="form-actions" style="justify-content:flex-start;">
-                <button class="save-btn" onclick="saveProfile()" data-i18n="settings_save">Save Changes</button>
-                <span class="settings-msg" id="profileMsg"></span>
-            </div>
-        </div>
-
-        <div class="settings-card">
-            <h3 data-i18n="settings_password">Change Password</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label data-i18n="settings_current_pass">Current Password</label>
-                    <input type="password" id="currentPassword" placeholder="••••••••" />
-                </div>
-                <div class="form-group">
-                    <label data-i18n="settings_new_pass">New Password</label>
-                    <input type="password" id="newPassword" placeholder="Min. 6 characters" />
-                </div>
-            </div>
-            <div class="form-actions" style="justify-content:flex-start;">
-                <button class="save-btn" onclick="savePassword()" data-i18n="settings_save_pass">Update Password</button>
-                <span class="settings-msg" id="passwordMsg"></span>
-            </div>
-        </div>
-
-        <div class="settings-card danger-card">
-            <h3 data-i18n="settings_danger">Danger Zone</h3>
-            <p data-i18n="settings_logout_all">Sign out from all devices</p>
-            <button class="danger-btn" onclick="logout()" data-i18n="settings_signout">Sign out</button>
-        </div>
-
-    </div>
-</div>
         <!-- MODAL -->
         <div class="modal-overlay" id="modalOverlay">
             <div class="modal">
@@ -428,19 +507,19 @@
 
         <footer>
             <p>Designed & Developed by
-                <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">Mohammad Hassan Abbasi</a>
-                &nbsp;|&nbsp; v1.5.2
+                <a href="https://www.linkedin.com/in/mhabbasii/" target="_blank">MH Abbasi</a>
+                &nbsp;|&nbsp; v1.6.4
             </p>
         </footer>
 
     </div>
 </div>
 
-<script src="lang.js?v=1.5.2"></script>
-<script src="auth.js?v=1.5.2"></script>
-<script src="app.js?v=1.5.2"></script>
-    
-    <!-- REPAIR MODAL -->
+<script src="lang.js?v=1.6.4"></script>
+<script src="auth.js?v=1.6.4"></script>
+<script src="app.js?v=1.6.4"></script>
+
+<!-- REPAIR MODAL -->
 <div class="modal-overlay" id="repairModalOverlay">
     <div class="modal">
         <div class="modal-header">
@@ -505,7 +584,8 @@
         </div>
     </div>
 </div>
-    <script>
+
+<script>
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(() => console.log('SW registered'))

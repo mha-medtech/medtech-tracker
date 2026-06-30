@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="apple-touch-startup-image" href="icons/icon-512.png">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a73e8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MedTracker">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedTech Tracker — Medical Equipment Management</title>
@@ -15,6 +21,7 @@
             <nav class="nav">
     <a href="#features" data-i18n="nav_features">Features</a>
     <a href="about.html" data-i18n="nav_about_link">About</a>
+                <a href="contact.html" data-i18n="nav_contact">Contact</a>
     <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
     <select class="lang-select" onchange="changeLang(this.value)">
                     <option value="en">EN</option>
@@ -33,14 +40,17 @@
 <div class="mobile-menu" id="mobileMenu">
     <a href="#features" data-i18n="nav_features">Features</a>
     <a href="about.html" data-i18n="nav_about_link">About</a>
+    <a href="contact.html" data-i18n="nav_contact">Contact</a>
     <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
     <a href="login.html" data-i18n="nav_login">Sign in</a>
     <a href="login.html" class="btn-solid" data-i18n="nav_register">Get started</a>
-    <div class="mobile-lang">
-        <button onclick="changeLang('en')" class="lang-btn">EN</button>
-        <button onclick="changeLang('de')" class="lang-btn">DE</button>
-        <button onclick="changeLang('fa')" class="lang-btn">FA</button>
-    </div>
+<div class="mobile-lang">
+    <select class="lang-select-mobile" onchange="changeLang(this.value)">
+        <option value="en">🌐 English</option>
+        <option value="de">🌐 Deutsch</option>
+        <option value="fa">🌐 فارسی</option>
+    </select>
+</div>
 </div>
     </header>
 
@@ -151,6 +161,7 @@
         <div class="footer-links">
     <a href="#features" data-i18n="nav_features">Features</a>
     <a href="about.html" data-i18n="nav_about_link">About</a>
+            <a href="contact.html" data-i18n="nav_contact">Contact</a>
     <a href="pricing.html" data-i18n="nav_pricing">Pricing</a>
     <a href="login.html" data-i18n="nav_login">Sign in</a>
     <a href="https://github.com/mha-medtech/medtech-tracker" target="_blank">GitHub</a>
