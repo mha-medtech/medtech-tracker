@@ -1474,12 +1474,29 @@ async function loadReports() {
     });
 
 // Repair count از ردیف‌های موجود
+// Repair count و cost واقعی از API
     let totalRepairs = 0;
+    let monthlyData = {};
     try {
-        const repairRows = document.querySelectorAll('.repair-card');
-        totalRepairs = repairRows.length;
-    } catch (e) {}
+        const equipIds = Array.from(rows).map(r => r.getAttribute('data-id')).filter(id => id);
+        let allRepairs = [];
 
+        for (const eqId of equipIds) {
+            const res = await fetch(`${API}/repairs/get.php?equipment_id=${eqId}&user_id=${user.id}`);
+            const data = await res.json();
+            if (data.success) allRepairs = allRepairs.concat(data.data);
+        }
+
+        totalRepairs = allRepairs.length;
+
+        allRepairs.forEach(r => {
+            const d = new Date(r.repair_date);
+            const key = `${d.getFullYear()}-${d.getMonth()}`;
+            monthlyData[key] = (monthlyData[key] || 0) + parseFloat(r.cost || 0);
+        });
+    } catch (e) {
+        console.error('Repair data error:', e);
+    }
     // Update stats
     document.getElementById('reportTotal').textContent = total;
     document.getElementById('reportActive').textContent = active;
@@ -1554,13 +1571,14 @@ async function loadReports() {
     });
 
     // Repair Cost Bar Chart
-    const months = [];
+const months = [];
     const costs = [];
     for (let i = 5; i >= 0; i--) {
         const d = new Date();
         d.setMonth(d.getMonth() - i);
+        const key = `${d.getFullYear()}-${d.getMonth()}`;
         months.push(d.toLocaleString('default', { month: 'short' }));
-        costs.push(0);
+        costs.push(monthlyData[key] || 0);
     }
 
     if (reportRepairChart) reportRepairChart.destroy();

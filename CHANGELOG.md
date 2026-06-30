@@ -4,6 +4,10 @@ All notable changes to MedTech Tracker are documented here.
 
 ---
 
+## [v1.6.5] — 2026-06-30
+### Fixed
+- Repair cost chart now shows real data fetched from repairs API
+
 ## [v1.6.4] — 2026-06-30
 ### Added
 - Reports page with full analytics (status chart, warranty chart, repair cost chart, upcoming calibrations table)
