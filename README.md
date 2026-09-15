@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-1.6.5-blue)
 ![Last Updated](https://img.shields.io/badge/updated-September%202026-green)
 ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20FA-orange)
-![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Status](https://img.shields.io/badge/status-completed-success)
 ![Stack](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JS%20%7C%20PHP%20%7C%20MySQL-informational)
 ![PWA](https://img.shields.io/badge/PWA-installable-blueviolet)
 
@@ -12,6 +12,21 @@ A full-stack web application for **medical equipment lifecycle management** in c
 MedTech Tracker was designed and developed by a Biomedical Engineer with professional experience in medical-device regulation, inspection, distribution, and healthcare operations.
 
 The project addresses a practical healthcare problem: equipment information is often scattered across spreadsheets, paper records, invoices, warranty documents, repair reports, and calibration records. MedTech Tracker brings this information together into a structured digital record for each device.
+
+---
+
+## ✅ Project Status
+
+**MedTech Tracker v1 is complete.**
+
+This repository represents the completed first generation of MedTech Tracker. Its original development goals have been implemented, including equipment lifecycle tracking, calibration and warranty management, repair history, reporting, authentication, multilingual support, and Progressive Web App functionality.
+
+The repository is preserved as a completed portfolio project and as the technical foundation for a planned next-generation implementation.
+
+- **Development status:** Completed
+- **Final version:** v1.6.5
+- **Completed:** September 2026
+- **Successor project:** Planned as a separate repository
 
 ---
 
@@ -42,7 +57,7 @@ MedTech Tracker was built as a practical attempt to organize this lifecycle into
 
 Rather than functioning only as an equipment inventory, the system follows each device through its operational lifecycle.
 
-This project also became an early technical foundation for my later work on **AI-assisted medical equipment documentation and data extraction**.
+This project also became an early technical foundation for my planned work on **AI-assisted medical equipment documentation and data extraction**.
 
 ---
 
@@ -227,9 +242,9 @@ The application manages **medical equipment information**, not electronic patien
 
 ---
 
-## ✅ Current Status
+## 📦 Completed Scope
 
-The core application is functional and currently includes:
+The completed first-generation application includes:
 
 - [x] Landing page
 - [x] Multilingual interface
@@ -248,28 +263,34 @@ The core application is functional and currently includes:
 - [x] Progressive Web App
 - [x] User settings
 
----
-
-## 🗺️ Roadmap
-
-Planned improvements include:
-
-- [ ] Multi-user clinic accounts and staff roles
-- [ ] Role-based access control
-- [ ] Bulk equipment actions
-- [ ] Bulk equipment import
-- [ ] PDF / printable reports
-- [ ] Advanced equipment analytics
-- [ ] Improved API architecture
-- [ ] Deployment on a dedicated server
-- [ ] Custom production domain
-- [ ] AI-assisted document processing integration
+No additional feature development is planned for this repository. Future work will continue as a separate next-generation project.
 
 ---
 
-## 🤖 Future Direction: AI-Assisted Medical Equipment Documentation
+## 🚀 Next Generation
 
-A related project currently under development explores how artificial intelligence can reduce manual documentation work in medical-equipment management.
+The concepts developed in MedTech Tracker are planned to continue in a new, independent project with a more modern architecture and AI-assisted workflows.
+
+The planned successor will explore:
+
+- modern backend architecture
+- improved API design
+- role-based access control
+- scalable clinic and staff management
+- bulk equipment workflows
+- document and image processing
+- AI-assisted information extraction
+- medical-device document matching
+- structured user-verification workflows
+- more advanced equipment analytics
+
+The successor project has **not yet started** and will be developed in a separate repository. A link will be added here when development begins.
+
+---
+
+## 🤖 Planned AI Direction: Medical Equipment Documentation
+
+A planned successor project will explore how artificial intelligence can reduce manual documentation work in medical-equipment management.
 
 The concept is to allow a user to photograph or upload documents associated with medical devices, including:
 
