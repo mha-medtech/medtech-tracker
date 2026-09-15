@@ -35,7 +35,6 @@ The repository is preserved as a completed portfolio project and as the technica
 | Version | URL | Notes |
 |---|---|---|
 | ✅ Full version (PHP + MySQL) | [medtracker.freedev.app](https://medtracker.freedev.app) | Login required, installable as PWA |
-| 👀 Frontend demo | [mha-medtech.github.io/medtech-tracker](https://mha-medtech.github.io/medtech-tracker) | Static preview only |
 
 ---
 
